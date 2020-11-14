@@ -1,0 +1,14 @@
+{
+  "token": "",
+  "channel": "",
+  "guild": "",
+  "botId": "",
+  "emoji": "👍",
+  "roles": [
+    {
+      "note": "lorem ipsum",
+      "message": "",
+      "role": ""
+    }
+  ]
+}
