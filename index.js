@@ -17,6 +17,13 @@ bot.on("ready", () => {
     });
   });
 
+  console.log('Setting Status');
+  bot.editStatus('idle', {
+    name: 'on your emotions.',
+    type: 0,
+    url: 'https://yooogle.co'
+  });
+
   console.log("Ready!");
 
 });
