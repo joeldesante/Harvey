@@ -1,7 +1,7 @@
 {
   "token": "",
   "channel": "",
-  "joinMessageChannel": "",
+  "joinMessageChannel": "t",
   "guild": "",
   "botId": "",
   "emoji": "👍",
