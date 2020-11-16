@@ -9,11 +9,11 @@ bot.on("ready", () => {
   Settings.roles.forEach((obj) => {
 
     bot.removeMessageReaction(Settings.channel, obj.message, Settings.emoji).catch(err => {
-      console.log(err);
+      //console.log(err);
     });
 
     bot.addMessageReaction(Settings.channel, obj.message, Settings.emoji).catch(err => {
-      console.log(err);
+      //console.log(err);
     });
   });
 
@@ -21,20 +21,25 @@ bot.on("ready", () => {
 
 });
 
+bot.on('guildMemberAdd', (guild, member) => {
+  bot.createMessage(Settings.joinMessageChannel, `Welcome to the server <@${member.id}>!\n**Join whatever class you'd like by visiting the <#${Settings.channel}> channel.**`)
+  .catch(err => {
+    console.log(err);
+  });
+});
+
 // FIXME: This no work for some reason.
 process.on('SIGINT', function() {
   console.log("\nCleaning up emojis...");
   Settings.roles.forEach((obj) => {
     bot.removeMessageReaction(Settings.channel, obj.message, Settings.emoji).catch(err => {
-      console.log(err);
+      //console.log(err);
     });
   });
 
-  console.log("Done. I'm gone thot.");
+  console.log("Done. I'm gone felisha.");
   process.exit();
 });
-
-const mid = "776971185530339379";
 
 bot.on("messageReactionAdd", (msg, emoji, reactor) => {
   if(reactor.id === Settings.botId) { return; }
@@ -44,12 +49,12 @@ bot.on("messageReactionAdd", (msg, emoji, reactor) => {
   if(emoji.name === Settings.emoji) {
     bot.addGuildMemberRole(Settings.guild, reactor.id, refrencedMessage.role, `AUTOMATED: ${reactor.name} has been subscribed.`)
     .catch(err => {
-      console.log(err);
+      //console.log(err);
     });
   } else {
     bot.removeMessageReactionEmoji(Settings.channel, refrencedMessage.message, emoji.name)
     .catch(err => {
-      console.log(err);
+      //console.log(err);
     });;
   }
 });
@@ -81,4 +86,4 @@ function getRefMessage(msg) {
   return refrencedMessage;
 }
 
-bot.connect(); // Get the bot to connect to Discord
+bot.connect();

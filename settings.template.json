@@ -1,14 +1,9 @@
 {
   "token": "",
   "channel": "",
+  "joinMessageChannel": "",
   "guild": "",
   "botId": "",
   "emoji": "👍",
-  "roles": [
-    {
-      "note": "lorem ipsum",
-      "message": "",
-      "role": ""
-    }
-  ]
+  "roles": []
 }
