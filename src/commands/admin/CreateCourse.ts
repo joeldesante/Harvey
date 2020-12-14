@@ -11,6 +11,16 @@ export class CreateCourse implements CommandExecutor {
         // Checks
         if (Checks.onFalse(args.length > 0)) return Promise.reject('Please pass at least one argument.');
 
+        // Execute code
+
+        //.. 1. Check if the role exists
+        //.. .. 1a. If exists, use that role.
+        //.. .. ->  Otherwise, create a new role.
+        //.. 2. Check if the channel exists
+        //.. .. 2a. If exists, use that channel.
+        //.. .. ->  Otherwise, create the channel in the set category.
+        //.. 3. Create a database entry for the course
+        //.. 4. Update the course selection catalog.
 
         return Promise.resolve(undefined);
     }
