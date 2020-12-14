@@ -1,5 +1,5 @@
 const Eris = require("eris");
-const Settings = require("./settings.json");
+const Settings = require("../settings.json");
 
 var bot = new Eris(Settings.token);
 
