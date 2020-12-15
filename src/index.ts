@@ -1,14 +1,26 @@
 import {Client} from "discord.js";
+import mongoose from 'mongoose';
 
-export class Harvey {
+export default class Harvey {
 
     private readonly client: Client;
+    //private readonly database: Mongoose;
 
     public constructor() {
         this.client = new Client();
+        this.connectToDatabase();
+    }
+
+    public connectToDatabase(): void {
+        mongoose.connect('mongodb://localhost/harvey', { useNewUrlParser: true })
+            .then(() => console.log('Database Connected.'))
+            .catch(e => {
+                console.error(e);
+                process.exit(5);
+            });
     }
 
     public listen(): Promise<string> {
-        return this.client.login('abcd');
+        return this.client.login('Nzg4MjI1MjM4NjMwMjY4OTU4.X9gZ9Q.FwazrCdhfxcAfkgc6dTKJ61PG68');
     }
 }
