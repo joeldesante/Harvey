@@ -21,6 +21,6 @@ export default class Harvey {
     }
 
     public listen(): Promise<string> {
-        return this.client.login('Nzg4MjI1MjM4NjMwMjY4OTU4.X9gZ9Q.FwazrCdhfxcAfkgc6dTKJ61PG68');
+        return this.client.login('oops');
     }
 }
