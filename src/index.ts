@@ -1,5 +1,5 @@
 import {Client} from "discord.js";
-import mongoose from 'mongoose';
+//import mongoose from 'mongoose';
 
 export default class Harvey {
 
@@ -8,19 +8,24 @@ export default class Harvey {
 
     public constructor() {
         this.client = new Client();
-        this.connectToDatabase();
+    //  this.connectToDatabase();
     }
 
-    public connectToDatabase(): void {
-        mongoose.connect('mongodb://localhost/harvey', { useNewUrlParser: true })
-            .then(() => console.log('Database Connected.'))
-            .catch(e => {
-                console.error(e);
+    /*public connectToDatabase(): void {
+    //    mongoose.connect('mongodb://localhost/harvey', { useNewUrlParser: true })
+    //        .then(() => console.log('Database Connected.'))
+    //        .catch(e => {
+    //            console.error(e);
                 process.exit(5);
             });
-    }
+    }*/
 
     public listen(): Promise<string> {
-        return this.client.login('oops');
+        return this.client.login(process.env.TOKEN);
     }
 }
+
+const bot = new Harvey();
+bot.listen().then(r => {
+    console.log('Listening')
+});
