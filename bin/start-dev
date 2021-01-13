@@ -1,0 +1,3 @@
+#/bin/sh
+# Starts up the docker env
+docker-compose up

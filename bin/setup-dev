@@ -16,8 +16,13 @@ printf "${NC}📦 ${GREEN}Installing developer dependancies to the local system.
 npm install --only=dev
 
 # Copy the .env.sample to the config folder
-printf "${NC}📋 ${GREEN}Copying configuration from sample...\n\n"
-cp ./config/.env.sample ./config/.env
+if [[ -f "./config/.env" ]]; then
+    printf "${GREEN}Config already exists... Skipping.\n\n"
+else
+    printf "${RED}Config not found...\n\n"
+    printf "${NC}📋 ${GREEN}Copying configuration from sample...\n\n"
+    cp ./config/.env.sample ./config/.env
+fi
 
 # Check to make sure docker is installed
 printf "${NC}👀 ${GREEN}Checking for docker\n"

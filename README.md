@@ -52,7 +52,21 @@ Use the windows specific setup script
 
 This will generate a new Harvey image on your system with MongoDB.
 
+### Setup Configuration
+As a developer, you will need to create a bot in the discord developer portal to use as your test device. Once you've created the bot, copy the secret token into .env replacing "Enter Discord Token Here...".
 
+### Done!
+Now, when you want to work o n the bot, just run the command:
+
+#### Linux/Mac
+```sh
+./bin/start-dev
+```
+
+#### Windows
+```
+./bin/start-dev.bat
+```
 ---
 
 ## Reqs
