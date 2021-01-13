@@ -1,3 +1,11 @@
+/*
+ *  Harvey
+ *  Joel DeSante
+ *  Copyright (c) Joel DeSante, 2021
+ */
+
+// Note: .env is loaded on startup. No need to include it here!
+
 import {Client} from "discord.js";
 //import mongoose from 'mongoose';
 

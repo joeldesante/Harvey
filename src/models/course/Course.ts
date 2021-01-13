@@ -1,3 +1,8 @@
+/* src\models\course\Course.ts
+ * Joel DeSante
+ * Copyright (c) Joel DeSante, 2021
+ */
+
 import mongoose, {Document, Schema} from "mongoose";
 
 export interface CourseDocument extends Document {

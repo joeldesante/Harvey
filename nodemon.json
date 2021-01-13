@@ -1,0 +1,5 @@
+{
+    "watch": ["src"],
+    "ext": "ts,json",
+    "exec": "npx ts-node -r dotenv/config ./src/index.ts dotenv_config_path=./config/.env"
+}

@@ -1,3 +1,7 @@
 /node_modules
 settings.json
 config/.env
+
+# IDE settings
+.idea
+.vscode

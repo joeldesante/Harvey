@@ -6,6 +6,7 @@ services:
     build: .
     volumes:
       - ./src:/source/src
+      - ./config:/source/config
   db:
     container_name: mongo_database
     image: mongo
