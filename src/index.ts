@@ -35,5 +35,4 @@ export default class Harvey {
 
 const bot = new Harvey();
 bot.listen().then(r => {
-    console.log('Listening')
 });
