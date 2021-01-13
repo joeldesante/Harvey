@@ -36,10 +36,18 @@ This means that your computer is not currently configured to run virtual machien
 ### Setup Development Enviorment
 Harvey uses Docker as it's universal development enviorment. This way everyone who works on the project is using the same system.
 
-To finish setting up the development enviorment, just run the following commands:
+#### Linux and Mac users
+You can use the automated setup script to set everything up.
+
+```sh
+./bin/setup-dev
+```
+
+#### Windows Users
+Use the windows specific setup script
 
 ```bash
-$ docker-compose up
+./bin/setup-dev.bat
 ```
 
 This will generate a new Harvey image on your system with MongoDB.
