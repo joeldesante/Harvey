@@ -46,33 +46,36 @@ export class Logger {
         }
         console.info(this.consoleLine('INFO', message));
     }
-    public debug(message: string): void {
+    public debug(message: string, error: Error | string = ''): void {
         if(process.env.DEBUG) {
+            let out = `${message}\n${error}`;
             try {
-                this.toFile('DEBUG', message);
+                this.toFile('DEBUG', out);
             } catch(err) {
                 console.warn('Could not write to log file.', err);
             }
-            console.debug(this.consoleLine('DEBUG', message));
+            console.debug(this.consoleLine('DEBUG', out));
         }
     }
 
-    public warn(message: string): void {
+    public warn(message: string, error: Error | string = ''): void {
+        let out = `${message}\n${error}`;
         try {
-            this.toFile('WARN', message);
+            this.toFile('WARN', out);
         } catch(err) {
             console.warn('Could not write to log file.', err);
         }
-        console.warn(this.consoleLine('INFO', message));
+        console.warn(this.consoleLine('WARN', out));
     }
 
-    public error(message: string): void {
+    public error(message: string, error: Error | string = ''): void {
+        let out = `${message}\n${error}`;
         try {
-            this.toFile('ERR', message);
+            this.toFile('ERR', out);
         } catch(err) {
             console.warn('Could not write to log file.', err);
         }
-        console.error(this.consoleLine('INFO', message));
+        console.error(this.consoleLine('ERR', out));
     }
 
     /**
@@ -90,7 +93,7 @@ export class Logger {
      * @param message 
      */
     private consoleLine(flag: string, message: string): string {
-        return `[${flag.toUpperCase().trim()}] ${message.trim()}\n`;
+        return `[${flag.toUpperCase().trim()}] ${message.trim()}`;
     }
 
     private toFile(flag: string, message: string): void {

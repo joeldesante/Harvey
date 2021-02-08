@@ -1,7 +1,7 @@
 //import { NotFoundError } from "common-errors";
 import { NotFoundError } from "common-errors";
 import { Client, Message } from "discord.js";
-import { stringify } from "querystring";
+import Harvey from "..";
 import { CommandTree } from "./CommandTree";
 
 export class CommandHandler {
@@ -21,7 +21,7 @@ export class CommandHandler {
         const tree = this.registeredTrees.find(tree => {
             return tree.getHandle.toLowerCase() === handle.toLowerCase();
         });
-        if (tree === undefined) { throw new NotFoundError('Sample'); }
+        if (tree === undefined) { throw new NotFoundError('Tree handle'); }
         return tree;
     }
 
@@ -33,14 +33,14 @@ export class CommandHandler {
         const explodedMessage = messageText.split(' ');
         const handle = explodedMessage[0].substring(1);
 
+        Harvey.LOGGER.info(`Recieved command "${handle}" <= ${message.author.username} ${message.author}`);
+
         try {
             const tree = this.fetchTreeByHandle(handle);
         } catch(error) {
-            
             if(error instanceof NotFoundError) {
-                console.warn(`Command Handle Not Found: ${handle}\n\t-> Executed by ${message.author.username}\n\t-> Sent at ${new Date(message.createdTimestamp).toUTCString()}`);
+                Harvey.LOGGER.warn(`Command handle "${handle}" not found. => ${message.author.username} ${message.author}`);
             }
-
             return;     // Silently fail.
         }
     

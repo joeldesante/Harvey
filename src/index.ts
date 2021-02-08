@@ -9,7 +9,7 @@
 import { Client } from "discord.js";
 import { CommandHandler } from "./commands/CommandHandler";
 import { CommandTree } from "./commands/CommandTree";
-import { Logger } from "./lib/checks/log/log";
+import { Logger } from "./lib/checks/log/Log";
 
 export default class Harvey {
 
