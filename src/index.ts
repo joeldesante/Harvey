@@ -25,13 +25,16 @@ export default class Harvey {
         // Initilize the command trees.
         this.commandHandler = new CommandHandler(this.client);
         this.commandHandler.register(new CommandTree('sample', 'test'));
+        Harvey.LOGGER.debug('Registered command handlers.');
     }
 
     public listen(): Promise<string> {
+        Harvey.LOGGER.debug('Preparing to start.');
         return this.client.login(process.env.TOKEN);
     }
 }
 
 const bot = new Harvey();
 bot.listen().then(r => {
+    Harvey.LOGGER.info(`Harvey is online.`);
 });

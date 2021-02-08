@@ -1,5 +1,5 @@
 //import { NotFoundError } from "common-errors";
-import { NotFoundError } from "common-errors";
+import { ArgumentError, InvalidOperationError, NotFoundError } from "common-errors";
 import { Client, Message } from "discord.js";
 import Harvey from "..";
 import { CommandTree } from "./CommandTree";
@@ -14,6 +14,7 @@ export class CommandHandler {
 
     public register(commandTree: CommandTree) {
         this.registeredTrees.push(commandTree);
+        Harvey.LOGGER.debug(`Registered command tree "${commandTree.getName}" with handle "${commandTree.getHandle}".`);
         // TODO: Sort the tree's by priority
     }
 
@@ -31,15 +32,29 @@ export class CommandHandler {
         if(messageText.startsWith('*') === false) { return; }   // Ignore this interaction.
         
         const explodedMessage = messageText.split(' ');
-        const handle = explodedMessage[0].substring(1);
+        let preHandle = explodedMessage.shift();
+        Harvey.LOGGER.debug(`Shifted exploded messages array. New length: ${explodedMessage.length}.`);
 
-        Harvey.LOGGER.info(`Recieved command "${handle}" <= ${message.author.username} ${message.author}`);
+        if(explodedMessage.length < 0 || preHandle === undefined) {
+            Harvey.LOGGER.debug(`Exploded message length: ${explodedMessage.length} (Should be greater than or equal to zero) / preHandle: ${preHandle} (Should NOT be undefined).`);
+            throw new InvalidOperationError('The message does not have content.');
+        }
+
+        const handle = preHandle.substring(1);
+        Harvey.LOGGER.info(`Recieved command "${handle}" with args [${explodedMessage.toString()}] <= ${message.author.username} ${message.author}`);
 
         try {
             const tree = this.fetchTreeByHandle(handle);
+            const node = tree.routeToTreeNode(explodedMessage);
+            Harvey.LOGGER.debug(`Routed to node - ${node}`);
+
+            if(node === undefined) {
+                throw new NotFoundError('Could not find the requested TreeNode.');
+            }
+
         } catch(error) {
             if(error instanceof NotFoundError) {
-                Harvey.LOGGER.warn(`Command handle "${handle}" not found. => ${message.author.username} ${message.author}`);
+                Harvey.LOGGER.warn(`Command handle "${handle}" with from "${messageText}" not found. => ${message.author.username} ${message.author}`);
             }
             return;     // Silently fail.
         }

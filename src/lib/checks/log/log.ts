@@ -48,6 +48,7 @@ export class Logger {
     }
     public debug(message: string, error: Error | string = ''): void {
         if(process.env.DEBUG) {
+
             let out = `${message}\n${error}`;
             try {
                 this.toFile('DEBUG', out);

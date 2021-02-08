@@ -1,6 +1,6 @@
 import {Controller} from "./Controller";
 import {Checks} from "../lib/checks/Checks";
-import { NotImplementedError, NotSupportedError } from "common-errors";
+import { ArgumentError, NotImplementedError, NotSupportedError } from "common-errors";
 
 export enum NodeType {
     STANDARD,
@@ -31,14 +31,25 @@ export class TreeNode {
         return this;
     }
 
-    public getHandle() {
+    public get getHandle() {
         return this.handle;
     }
 
-    public find(handle: string) {
-        return this.treeNodes.find((node) => {
-            return node.getHandle().toLowerCase() === handle.toLowerCase();
+    public find(path: Array<string>): TreeNode | undefined {
+        const handle = path.shift();
+
+        // Returns itself if there are no more items on the path.
+        if(path.length < 0 || handle === undefined) { return this; }
+
+        const node = this.treeNodes.find((node) => {
+            return node.getHandle.toLowerCase() === handle.toLowerCase();
         });
+
+        if(node) {
+            return node.find(path);
+        }
+
+        return undefined;
     }
 
 }
@@ -62,8 +73,8 @@ export class CommandTree {
         return this.name;
     }
 
-    public routeToController(path: Array<string>): Controller {
-        throw new NotSupportedError('Router to controller');
+    public routeToTreeNode(path: Array<string>): TreeNode | undefined {
+        return this.root.find(path);
     }
     
 }
