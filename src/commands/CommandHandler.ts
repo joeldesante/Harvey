@@ -28,8 +28,14 @@ export class CommandHandler {
 
     private handleIncomingMessage(message: Message) {
         const messageText = message.content;
+
+        // Display loading typing...
         if(message.author.bot) { return; }
-        if(messageText.startsWith('*') === false) { return; }   // Ignore this interaction.
+        if(process.env.COMMAND_FLAG === undefined) {
+            // Default command flag...
+            process.env.COMMAND_FLAG = '.';
+        }
+        if(messageText.startsWith(process.env.COMMAND_FLAG) === false) { return; }   // Ignore this interaction.
         
         const explodedMessage = messageText.split(' ');
         let preHandle = explodedMessage.shift();
@@ -57,8 +63,13 @@ export class CommandHandler {
                 throw new NotImplementedError('The node\'s controller is not implemented.');
             }
 
+            const data = new Map<string, any>();
+            data.set('message', message);   // Does this give the controller too much power?
+
             // Note: Any errors thrown from within the controllers will have to be handled in the following catch clause.
-            treeNodeController.execute(new Map<string, any>());
+            treeNodeController.execute(data);
+
+            // Idea? TreeNode#execute() originally was supposed to be a promise. Would it be worth making this handler async to support this?
 
         } catch(err) {
             if(err instanceof NotFoundError) {
@@ -68,8 +79,6 @@ export class CommandHandler {
             } else {
                 Harvey.LOGGER.warn(`There was an unexpected error.`, err);
             }
-
-            return;     // Silently fail.
         }
     }
 }
