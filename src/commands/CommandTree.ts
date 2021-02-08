@@ -51,3 +51,13 @@ export class CommandTree {
         this.name = name;
     }
 }
+
+export class TreeFactory {
+    /**
+     * Builds a Command Tree from given JSON data.
+     * @param data 
+     */
+    static create(data: object): CommandTree {
+        return new CommandTree('name', 'test');
+    }
+}
