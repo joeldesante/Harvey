@@ -44,12 +44,19 @@ export class TreeNode {
 
 export class CommandTree {
     private name: string;
+    private handle: string;
     private root: any;
 
     constructor(name: string, handle: string) {
         this.root = new TreeNode(NodeType.STANDARD, handle);
+        this.handle = handle;
         this.name = name;
     }
+
+    public get getHandle() : string {
+        return this.handle;
+    }
+    
 }
 
 export class TreeFactory {
