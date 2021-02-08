@@ -7,6 +7,7 @@
 // Note: .env is loaded on startup. No need to include it here!
 
 import {Client} from "discord.js";
+import { CommandTree } from "./commands/CommandTree";
 
 export default class Harvey {
 
@@ -15,6 +16,9 @@ export default class Harvey {
 
     public constructor() {
         this.client = new Client();
+
+        // Initilize the command trees.
+        new CommandTree('sample', 'test');
     }
 
     public listen(): Promise<string> {
