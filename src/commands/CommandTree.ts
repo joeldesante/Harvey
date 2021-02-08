@@ -56,6 +56,10 @@ export class CommandTree {
     public get getHandle() : string {
         return this.handle;
     }
+
+    public get getName() {
+        return this.name;
+    }
     
 }
 
