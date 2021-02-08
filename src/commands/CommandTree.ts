@@ -20,10 +20,7 @@ export class TreeNode {
         this.type = type;
         this.handle = handle;
         this.treeNodes = new Array<TreeNode>();
-
-        if(controller !== undefined) {
-            this.controller = controller;
-        }
+        this.controller = controller;
     }
 
     public add(node: TreeNode): TreeNode {
@@ -33,6 +30,10 @@ export class TreeNode {
 
     public get getHandle() {
         return this.handle;
+    }
+
+    public get getController() {
+        return this.controller;
     }
 
     public find(path: Array<string>): TreeNode | undefined {

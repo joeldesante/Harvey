@@ -1,5 +1,5 @@
 //import { NotFoundError } from "common-errors";
-import { ArgumentError, InvalidOperationError, NotFoundError } from "common-errors";
+import { ArgumentError, InvalidOperationError, NotFoundError, NotImplementedError } from "common-errors";
 import { Client, Message } from "discord.js";
 import Harvey from "..";
 import { CommandTree } from "./CommandTree";
@@ -52,12 +52,24 @@ export class CommandHandler {
                 throw new NotFoundError('Could not find the requested TreeNode.');
             }
 
-        } catch(error) {
-            if(error instanceof NotFoundError) {
-                Harvey.LOGGER.warn(`Command handle "${handle}" with from "${messageText}" not found. => ${message.author.username} ${message.author}`);
+            const treeNodeController = node.getController;
+            if(treeNodeController === undefined) {
+                throw new NotImplementedError('The node\'s controller is not implemented.');
             }
+
+            // Note: Any errors thrown from within the controllers will have to be handled in the following catch clause.
+            treeNodeController.execute(new Map<string, any>());
+
+        } catch(err) {
+            if(err instanceof NotFoundError) {
+                Harvey.LOGGER.warn(`Command handle "${handle}" with from "${messageText}" not found. => ${message.author.username} ${message.author}`);
+            } else if(err instanceof NotImplementedError) {
+                Harvey.LOGGER.warn(`Command handle "${handle}" with from "${messageText}" is not yet implemented. => ${message.author.username} ${message.author}`), err;
+            } else {
+                Harvey.LOGGER.warn(`There was an unexpected error.`, err);
+            }
+
             return;     // Silently fail.
         }
-    
     }
 }
