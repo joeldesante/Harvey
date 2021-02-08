@@ -1,4 +1,5 @@
 //import { NotFoundError } from "common-errors";
+import { NotFoundError } from "common-errors";
 import { Client, Message } from "discord.js";
 import { stringify } from "querystring";
 import { CommandTree } from "./CommandTree";
@@ -9,7 +10,6 @@ export class CommandHandler {
     constructor(client: Client) {
         this.registeredTrees = new Array<CommandTree>();
         client.on('message', message => this.handleIncomingMessage(message));
-        console.log('oi')
     }
 
     public register(commandTree: CommandTree) {
@@ -21,7 +21,7 @@ export class CommandHandler {
         const tree = this.registeredTrees.find(tree => {
             return tree.getHandle.toLowerCase() === handle.toLowerCase();
         });
-        if (tree === undefined) { throw new Error('Sample'); }
+        if (tree === undefined) { throw new NotFoundError('Sample'); }
         return tree;
     }
 
@@ -32,14 +32,15 @@ export class CommandHandler {
         
         const explodedMessage = messageText.split(' ');
         const handle = explodedMessage[0].substring(1);
-        
-        message.reply(`Handle: ${handle}`);
 
         try {
             const tree = this.fetchTreeByHandle(handle);
-            message.reply(`Found tree: ${tree.getName}`);
         } catch(error) {
-            message.reply('No command found with that handle.');
+            
+            if(error instanceof NotFoundError) {
+                console.warn(`Command Handle Not Found: ${handle}\n\t-> Executed by ${message.author.username}\n\t-> Sent at ${new Date(message.createdTimestamp).toUTCString()}`);
+            }
+
             return;     // Silently fail.
         }
     

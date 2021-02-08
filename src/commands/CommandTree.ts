@@ -1,5 +1,6 @@
 import {Controller} from "./Controller";
 import {Checks} from "../lib/checks/Checks";
+import { NotImplementedError, NotSupportedError } from "common-errors";
 
 export enum NodeType {
     STANDARD,
@@ -59,6 +60,10 @@ export class CommandTree {
 
     public get getName() {
         return this.name;
+    }
+
+    public routeToController(path: Array<string>): Controller {
+        throw new NotSupportedError('Router to controller');
     }
     
 }

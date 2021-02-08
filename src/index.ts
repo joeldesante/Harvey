@@ -6,11 +6,14 @@
 
 // Note: .env is loaded on startup. No need to include it here!
 
-import {Client} from "discord.js";
+import { Client } from "discord.js";
 import { CommandHandler } from "./commands/CommandHandler";
 import { CommandTree } from "./commands/CommandTree";
+import { Logger } from "./lib/checks/log/log";
 
 export default class Harvey {
+
+    static readonly LOGGER: Logger = new Logger();
 
     private readonly client: Client;
     private commandHandler: CommandHandler;
