@@ -13,6 +13,7 @@ import { Version } from "./commands/base/controllers/Version";
 import { CommandHandler } from "./commands/CommandHandler";
 import { CommandTree } from "./commands/CommandTree";
 import { Logger } from "./lib/log/Log";
+import { SampleService } from "./services/base/SampleService";
 import { ServiceManager } from "./services/ServiceManager";
 
 export default class Harvey {
@@ -31,6 +32,7 @@ export default class Harvey {
         this.serviceManager = new ServiceManager(this.client);
 
         Harvey.LOGGER.debug('Registering Services.')
+        this.serviceManager.registerService(new SampleService());
 
         Harvey.LOGGER.debug('Registering Harvey\'s base command set.');  // Move this to the parser
         this.commandHandler.register(new CommandTree('base', 'help', -1, new Help()));
