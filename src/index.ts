@@ -13,6 +13,7 @@ import { Version } from "./commands/base/controllers/Version";
 import { CommandHandler } from "./commands/CommandHandler";
 import { CommandTree } from "./commands/CommandTree";
 import { Logger } from "./lib/log/Log";
+import { ServiceManager } from "./services/ServiceManager";
 
 export default class Harvey {
 
@@ -20,13 +21,16 @@ export default class Harvey {
 
     private readonly client: Client;
     private commandHandler: CommandHandler;
+    private serviceManager: ServiceManager;
     //private readonly database: Mongoose;
 
     public constructor() {
         this.client = new Client();
 
-        // Initilize the command trees.
         this.commandHandler = new CommandHandler(this.client);
+        this.serviceManager = new ServiceManager(this.client);
+
+        Harvey.LOGGER.debug('Registering Services.')
 
         Harvey.LOGGER.debug('Registering Harvey\'s base command set.');  // Move this to the parser
         this.commandHandler.register(new CommandTree('base', 'help', -1, new Help()));
