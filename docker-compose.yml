@@ -1,0 +1,21 @@
+version: "3"
+services:
+  harvey:
+    container_name: harvey
+    image: harvey
+    build: .
+    volumes:
+      - ./src:/source/src
+      - ./config:/source/config
+  db:
+    container_name: mongo_database
+    image: mongo
+    ports:
+      - 9999:27017
+    volumes:
+      - db_data:/data/db
+    restart: always
+
+# Persistent data
+volumes:
+  db_data:
