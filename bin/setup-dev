@@ -23,20 +23,3 @@ else
     printf "${NC}📋 ${GREEN}Copying configuration from sample...\n\n"
     cp ./config/.env.sample ./config/.env
 fi
-
-# Check to make sure docker is installed
-printf "${NC}👀 ${GREEN}Checking for docker\n"
-if [ -x "$(command -v docker)" ]; then
-    printf "${NC}⚓ ${GREEN}Docker found. Running setup...\n\n"
-    docker-compose up
-else
-    printf "${NC}⚠️ ${REDBG}${WHITE} ERR ${NC} Docker is either not installed or can not be executed.\n"
-    printf "Try running this script again with administrator rights.\n\n"
-
-    # Clean up
-    printf "Cleaning Up..."
-    rm ./config/.env
-    rm -rf ./node_modules
-
-    exit
-fi
