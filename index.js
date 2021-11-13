@@ -72,7 +72,7 @@ bot.on("messageReactionRemove", (msg, emoji, reactor) => {
   if(refrencedMessage === null) { return; }
 
   if(emoji.name === Settings.emoji) {
-    bot.removeGuildMemberRole(Settings.guild, reactor, refrencedMessage.role, `AUTOMATED: ${reactor.name} has been subscribed.`)
+    bot.removeGuildMemberRole(Settings.guild, reactor, refrencedMessage.role, `AUTOMATED: ${reactor.name} has been unsubscribed.`)
     .catch(err => {
       console.log(err);
     });
