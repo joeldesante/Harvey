@@ -4,11 +4,13 @@ import client from "./discordClient.js";
 
 Logger.info("Starting Harvey...");
 
+
 const TOKEN = process.env.DISCORD_TOKEN || "";
 if(TOKEN.toString().trim() === "") {
     throw new Error("Invalid Discord access token configured.");
 }
 
+Logger.info("Registering discord client event listeners.");
 client.on('messageReactionAdd', async (reaction, user) => {
 	if (reaction.partial) {
 		try {
@@ -34,5 +36,6 @@ client.on('messageReactionRemove', async (reaction, user) => {
 
 	Logger.info(`${reaction.message.author}'s message "${reaction.message.content}" lost a reaction!`);
 });
+
 
 client.login(TOKEN);
