@@ -30,7 +30,7 @@ cd ./Harvey && npm install
 
 3. **Create the configuration file and update it so it is valid.**
 ```
-cat ./.env.example > touch .env
+cat ./.env.example > .env
 ```
 After running the above command, you must open the .env file in a text editor and put your Discord bots token in the `DISCORD_TOKEN` field.
 
