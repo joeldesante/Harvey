@@ -1,0 +1,8 @@
+node_modules
+npm-debug.log
+
+/logs/**/*
+
+# In docker, env should be handled from the image itself.
+.env
+.env.example

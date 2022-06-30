@@ -1,42 +1,50 @@
 # Harvey
-A bot for helping manage the ODU Computer Science Discord Server.
+Harvey is a community managment Discord bot for the Old Dominion University Computer Science community. 
 
-### How to begin developing features for the bot
-If you are interested in working on the Harvey bot. Please make sure you read the following.
+## Quick Start
+To get started with Harvey you first must decide how you intend on hosting him.
 
----
-Harvey is built using [Discord JS](https://discord.js.org/#/) and [NodeJS](https://nodejs.org/en/). To get started you will need to make sure you have the following software installed on your computer.
+### System Requirments
+- NodeJS 18+
+- NPM
 
-**1. Install Git**
+### Docker (Recommended)
+**Note:** You will need to install Docker or (if you are on Windows/Mac) [Docker Desktop](https://www.docker.com/products/docker-desktop/) to use this method.
 
-This one is kind of a given. If you are on an Apple computer, git is already pre-installed 
-meaning you can move to the next step.
+Open your command line and run these commands to get started:
+```
+docker pull ...
+docker run ...
+```
 
-If you are on Windows, you may need to install [GitBash](https://git-scm.com/downloads) which
-will allow you to use the git repository.
+### Regular Method
+1. **Clone the repository to your computer.**
+```
+git clone https://github.com/joeldesante/Harvey.git
+```
 
-**If you are unfamiliar with how git works. Spend a couple days learning about it before attempting
-to work on Harvey**
+2. **Access the directory and install the dependancies.**
+```
+cd ./Harvey && npm install
+```
 
-**2. Install NodeJS**
-Install the ***LTS*** (Long Term Support) version of NodeJS.
+3. **Create the configuration file and update it so it is valid.**
+```
+cat ./.env.example > .env
+```
+After running the above command, you must open the .env file in a text editor and put your Discord bots token in the `DISCORD_TOKEN` field.
 
-**3. Fork and Clone the project**
-You will need to create a fork of the project before you can make changes.
-Please research a guide that explains how to contribute to an open source project.
+4. **(Optional) Setup the database.**
 
-**4. Comment on the open issue ticket (or make a new one)**
-Make an issue ticket requesting a feature. Label it as "enhancement".
+More details about that to come...
 
-If the ticket already exists then comment your intentions to work on the feature.
+5. **Install npm modules**
 
+```
+npm install
+```
 
-**5. Create a branch and work on the code**
-You will need to make a branch that will contain a copy of the new code. 
-Once you are done you can push the new code to the forked remote repository.
-
-**6. Create a pull request**
-Once everything is ready and has been tested. Create a pull request on the GitHub website.
-
-If everything checks out, we will merge in your feature and update the Harvey bot so everyone can use your new feature.
-
+6. **Start the bot.**
+```
+npm start
+```
