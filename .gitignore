@@ -4,6 +4,5 @@
 /node_modules
 /logs/**/*
 package-lock.json
-settings.json
 
 .env

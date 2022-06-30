@@ -1,6 +1,6 @@
 import { Client, Intents } from "discord.js";
 import registeredCommands from "./commands/registeredCommands.js";
-import { Logger } from "./logger.js";
+import { logger } from "./logger.js";
 
 const client = new Client({ 
     intents: [ 
@@ -12,9 +12,9 @@ const client = new Client({
 });
 
 client.once('ready', async () =>  {
-    Logger.info("Harvey has logged in and is ready.");
+    logger.info("Harvey has logged in and is ready.");
 
-    Logger.info("Registering discord commands.");
+    logger.info("Registering discord commands.");
 
     registeredCommands.forEach(async command => {
         await client.application.commands.create(command.body.toJSON(), "987851629162287204");        // TODO: Make it so it will register globally when in production mode.

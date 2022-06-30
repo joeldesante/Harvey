@@ -38,7 +38,13 @@ After running the above command, you must open the .env file in a text editor an
 
 More details about that to come...
 
-5. **Start the bot.**
+5. **Install npm modules**
+
+```
+npm install
+```
+
+6. **Start the bot.**
 ```
 npm start
 ```

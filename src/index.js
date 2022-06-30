@@ -1,40 +1,40 @@
 import 'dotenv/config';
-import { Logger } from "./logger.js";
+import { logger } from "./logger.js";
 import client from "./discordClient.js";
 
-Logger.info("Starting Harvey...");
+logger.info("Starting Harvey...");
 
 
 const TOKEN = process.env.DISCORD_TOKEN || "";
-if(TOKEN.toString().trim() === "") {
+if (TOKEN.toString().trim() === "") {
     throw new Error("Invalid Discord access token configured.");
 }
 
-Logger.info("Registering discord client event listeners.");
-client.on('messageReactionAdd', async (reaction, user) => {
-	if (reaction.partial) {
-		try {
-			await reaction.fetch();
-		} catch (error) {
-			Logger.error('Something went wrong when fetching the message:', error);
-			return;
-		}
-	}
+logger.info("Registering discord client event listeners.");
+client.on('messageReactionAdd', async reaction => {
+    if (reaction.partial) {
+        try {
+            await reaction.fetch();
+        } catch (error) {
+            logger.error('Something went wrong when fetching the message:', error);
+            return;
+        }
+    }
 
-	Logger.info(`${reaction.message.author}'s message "${reaction.message.content}" lost a reaction!`);
+    logger.info(`${reaction.message.author}'s message "${reaction.message.content}" lost a reaction!`);
 });
 
-client.on('messageReactionRemove', async (reaction, user) => {
-	if (reaction.partial) {
-		try {
-			await reaction.fetch();
-		} catch (error) {
-			Logger.error('Something went wrong when fetching the message:', error);
-			return;
-		}
-	}
+client.on('messageReactionRemove', async reaction => {
+    if (reaction.partial) {
+        try {
+            await reaction.fetch();
+        } catch (error) {
+            logger.error('Something went wrong when fetching the message:', error);
+            return;
+        }
+    }
 
-	Logger.info(`${reaction.message.author}'s message "${reaction.message.content}" lost a reaction!`);
+    logger.info(`${reaction.message.author}'s message "${reaction.message.content}" lost a reaction!`);
 });
 
 
