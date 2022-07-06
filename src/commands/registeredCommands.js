@@ -3,9 +3,9 @@
  */
 
 import createCourse from "./createCourse.js";
-import anotherTest from "./anotherTest.js";
+import setCourseRoleChannel from "./setCourseRoleChannel.js";
 
 export default [
     createCourse,
-    anotherTest
+    setCourseRoleChannel
 ];

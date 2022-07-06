@@ -1,41 +1,20 @@
 import 'dotenv/config';
 import { logger } from "./logger.js";
-import client from "./discordClient.js";
+import { sequelize } from './models/index.js';
+import client from './discordClient.js';
 
-logger.info("Starting Harvey...");
+import { registerCourseChannelHandler } from './handlers/courseChannelHandler.js';
 
+logger.info("Syncing with the database.");
+sequelize.sync({ force: process.env.PROD === true ? false : true });
 
+logger.info("Registering handlers.");
+registerCourseChannelHandler(client);
+
+logger.info("Logging into Discord.");
 const TOKEN = process.env.DISCORD_TOKEN || "";
 if (TOKEN.toString().trim() === "") {
     throw new Error("Invalid Discord access token configured.");
 }
-
-logger.info("Registering discord client event listeners.");
-client.on('messageReactionAdd', async reaction => {
-    if (reaction.partial) {
-        try {
-            await reaction.fetch();
-        } catch (error) {
-            logger.error('Something went wrong when fetching the message:', error);
-            return;
-        }
-    }
-
-    logger.info(`${reaction.message.author}'s message "${reaction.message.content}" lost a reaction!`);
-});
-
-client.on('messageReactionRemove', async reaction => {
-    if (reaction.partial) {
-        try {
-            await reaction.fetch();
-        } catch (error) {
-            logger.error('Something went wrong when fetching the message:', error);
-            return;
-        }
-    }
-
-    logger.info(`${reaction.message.author}'s message "${reaction.message.content}" lost a reaction!`);
-});
-
 
 client.login(TOKEN);
