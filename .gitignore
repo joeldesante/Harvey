@@ -3,7 +3,7 @@
 /.idea
 /node_modules
 /logs/**/*
-/temp/**/*
+/data/**/*
 package-lock.json
 
 .env
