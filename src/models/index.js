@@ -5,7 +5,10 @@ import { CourseModelInit } from './course.js';
 import { CourseRolesSettingModelInit } from './courseRolesSetting.js';
 
 logger.info("Initializing database connection.");
-const sequelize = new Sequelize('sqlite::memory:');
+const sequelize = new Sequelize({
+    dialect: 'sqlite',
+    storage: './data/database.sqlite'
+});
 
 CourseModelInit(sequelize);
 CourseRolesSettingModelInit(sequelize);

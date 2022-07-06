@@ -10,14 +10,21 @@ export default {
             .setName("role-channel")
             .setDescription("The channel in which the role selection will exist.")
             .setRequired(true)
+        )
+        .addChannelOption(new SlashCommandChannelOption()
+            .setName("parent-channel")
+            .setDescription("The category in which the course chats will reside.")
+            .setRequired(true)
         ),
     onTriggered: async function(interaction) {
         const courseRoleSettings = await CourseRolesSetting.findOne({ where: { guildId: interaction.guildId } });
         if(courseRoleSettings === null) {
             await CourseRolesSetting.create({
                 guildId: interaction.guildId,
-                roleSelectionChannelId: interaction.options.getChannel("role-channel").id
+                roleSelectionChannelId: interaction.options.getChannel("role-channel").id,
+                courseChatCategoryId: interaction.options.getChannel("parent-channel").id
             });
+            
             logger.info("Role selection channel has been created.");
             interaction.reply("Role selection channel has been set.");
             return;

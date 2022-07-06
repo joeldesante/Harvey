@@ -8,7 +8,8 @@ const CourseRolesSettingModelInit = (sequelize) => {
             type: DataTypes.STRING,
             unique: true
         },
-        roleSelectionChannelId: DataTypes.STRING
+        roleSelectionChannelId: DataTypes.STRING,
+        courseChatCategoryId: DataTypes.STRING
     }, {
         sequelize,
         modelName: 'CourseRolesSetting'

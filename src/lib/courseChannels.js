@@ -47,17 +47,20 @@ export async function createCourseChannel(name, guild) {
     name = _.camelCase(name);
 
     const role = await guild.roles.create({ name });
+    role.setHoist(true);
+    role.setMentionable(true);
 
     const courseChannel = await guild.channels.create(name);
-    courseChannel.permissionOverwrites.edit(guild.roles.everyone, {
-        VIEW_CHANNEL: false
-    });
-
-    courseChannel.permissionOverwrites.edit(role, {
+    await courseChannel.setParent(courseRoleSettings.courseChatCategoryId, { lockPermissions: false });
+    await courseChannel.permissionOverwrites.edit(role, {
         VIEW_CHANNEL: true
     });
 
-    const joinMessage = await joinMessageChannel.send(`**${_.upperCase(name)} @${name}**`);
+    await courseChannel.permissionOverwrites.edit(guild.roles.everyone, {
+        VIEW_CHANNEL: false
+    });
+
+    const joinMessage = await joinMessageChannel.send(`**${_.upperCase(name)} <@&${role.id}>**`);
     await joinMessage.react('👍');
 
     // Create the database entry
