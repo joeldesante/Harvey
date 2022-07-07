@@ -10,7 +10,9 @@ export default {
             .setName("name")
             .setDescription("The name of the course channel and role which you want to create.")
             .setRequired(true)
-        ),
+        )
+        .setDefaultMemberPermissions(0)
+        .setDMPermission(false),
     onTriggered: async function(interaction) {
         const courseChannelName = interaction.options.getString("name");
         await createCourseChannel(courseChannelName, interaction.guild);

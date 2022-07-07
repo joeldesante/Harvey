@@ -15,7 +15,9 @@ export default {
             .setName("parent-channel")
             .setDescription("The category in which the course chats will reside.")
             .setRequired(true)
-        ),
+        )
+        .setDefaultMemberPermissions(0)
+        .setDMPermission(false),
     onTriggered: async function(interaction) {
         const courseRoleSettings = await CourseRolesSetting.findOne({ where: { guildId: interaction.guildId } });
         if(courseRoleSettings === null) {

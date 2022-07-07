@@ -3,7 +3,7 @@ import _ from "lodash";
 import { Course } from "../models/course.js";
 import { CourseRolesSetting } from "../models/courseRolesSetting.js";
 
-import {inspect} from "util";
+//import {inspect} from "util";
 
 /**
  * @param {Client} client The Discord bots client.
@@ -69,5 +69,20 @@ export async function createCourseChannel(name, guild) {
         channelId: courseChannel.id,
         roleId: role.id,
         messageId: joinMessage.id
+    });
+}
+
+/**
+ * Adds an existing course channel to the database.
+ * @param {String} channelId 
+ * @param {String} joinMessageId 
+ * @param {String} roleId 
+ */
+export async function linkExistingCourseChannel(channelId, joinMessageId, roleId, name) {
+    await Course.create({
+        name: name,
+        channelId: channelId,
+        roleId: roleId,
+        messageId: joinMessageId
     });
 }

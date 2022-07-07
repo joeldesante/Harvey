@@ -3,9 +3,11 @@
  */
 
 import createCourse from "./createCourse.js";
+import linkCourse from "./linkCourse.js";
 import setCourseRoleChannel from "./setCourseRoleChannel.js";
 
 export default [
     createCourse,
-    setCourseRoleChannel
+    setCourseRoleChannel,
+    linkCourse
 ];
