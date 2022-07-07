@@ -6,7 +6,9 @@ import client from './discordClient.js';
 import { registerCourseChannelHandler } from './handlers/courseChannelHandler.js';
 
 logger.info("Syncing with the database.");
-sequelize.sync({ force: process.env.PROD === true ? false : true });
+sequelize.sync({ force: (process.env.PROD === "true") ? false : true });
+
+logger.info(`Bot Mode, PROD: ${process.env.PROD}, Database force update: ${(process.env.PROD === "true") ? false : true}`);
 
 logger.info("Registering handlers.");
 registerCourseChannelHandler(client);
