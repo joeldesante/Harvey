@@ -86,3 +86,21 @@ export async function linkExistingCourseChannel(channelId, joinMessageId, roleId
         messageId: joinMessageId
     });
 }
+
+/**
+ * Deletes the course channel and related roles.
+ * @param {String} roleId 
+ */
+export async function deleteCourseChannel(roleId) {
+    const course = await Course.findOne({
+        where: { roleId }
+    });
+
+    // Fetch the join channel and then delete the message
+
+    // Fetch the course channel and then move it to an archive or just delete it tbh
+
+    // Fetch the role and then delete that shit
+
+    // Now delete the record of the course and your done!
+}
