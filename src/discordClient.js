@@ -13,9 +13,7 @@ const client = new Client({
 
 client.once('ready', async () =>  {
     logger.info("Harvey has logged in and is ready.");
-
     logger.info("Registering discord commands.");
-
     registeredCommands.forEach(async command => {
         await client.application.commands.create(command.body.toJSON(), "987851629162287204");        // TODO: Make it so it will register globally when in production mode.
         client.on('interactionCreate', async interaction => {

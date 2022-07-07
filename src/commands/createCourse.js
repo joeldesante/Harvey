@@ -1,17 +1,22 @@
-import { SlashCommandBuilder, SlashCommandChannelOption } from '@discordjs/builders';
+import { SlashCommandBuilder, SlashCommandStringOption } from '@discordjs/builders';
+import { createCourseChannel } from '../lib/courseChannels.js';
 import { logger } from '../logger.js';
 
 export default {
     body: new SlashCommandBuilder()
         .setName('create-course')
         .setDescription('Creates a course chat for a given course.')
-        .addChannelOption(
-            new SlashCommandChannelOption()
-                .setName("channel")
-                .setDescription("The channel which users will be talking.")
-        ),
+        .addStringOption(new SlashCommandStringOption()
+            .setName("name")
+            .setDescription("The name of the course channel and role which you want to create.")
+            .setRequired(true)
+        )
+        .setDefaultMemberPermissions(0)
+        .setDMPermission(false),
     onTriggered: async function(interaction) {
-        logger.info("Yoo hoo!");
-        interaction.reply("Hoi!");
+        const courseChannelName = interaction.options.getString("name");
+        await createCourseChannel(courseChannelName, interaction.guild);
+        interaction.reply(`Created course channel ${courseChannelName}`);
+        logger.info(`Created course channel ${courseChannelName}`);
     }   
-}
+};
