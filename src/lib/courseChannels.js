@@ -86,3 +86,41 @@ export async function linkExistingCourseChannel(channelId, joinMessageId, roleId
         messageId: joinMessageId
     });
 }
+
+/**
+ * Deletes the course channel and related roles.
+ * @param {String} roleId 
+ */
+export async function deleteCourseChannel(roleId, guild) {
+    const course = await Course.findOne({
+        where: { roleId: roleId }
+    });
+
+    if (!course) {
+        throw new Error("No course found for the given role.");
+    }
+
+    const courseRoleSetting = await CourseRolesSetting.findOne({
+        where: { guildId: guild.id }
+    });
+
+    if(!courseRoleSetting) {
+        throw new Error("Join channel is misconfigured.");
+    }
+
+    const joinChannelId = courseRoleSetting.roleSelectionChannelId;
+    const joinChannel = await guild.channels.fetch(joinChannelId);
+
+    const messageId = course.messageId;
+    const joinMessage = await joinChannel.messages.fetch(messageId);
+    await joinMessage.delete();
+
+    const channelId = course.channelId;
+    const channel = await guild.channels.fetch(channelId);
+    await channel.delete();
+
+    const role = await guild.roles.fetch(roleId);
+    await role.delete();
+
+    await course.destroy();
+}

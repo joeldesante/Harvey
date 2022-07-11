@@ -1,0 +1,8 @@
+{
+    "cordeBotToken":  "",
+    "botTestId":  "<yourBotId>",
+    "guildId":  "<guildId>",
+    "channelId":  "<channelId>",
+    "botPrefix":  "!",
+    "testMatches":  ["./test/**"]
+}
