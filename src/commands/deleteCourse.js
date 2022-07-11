@@ -16,7 +16,7 @@ export default {
     onTriggered: async function(interaction) {
         const courseChannelRole = interaction.options.getString("course-role");
         await deleteCourseChannel(courseChannelRole.id);
-        interaction.reply(`Deleted course channel.`);
-        logger.info(`Deleted course channel ${courseChannelRole.name}`);
+        interaction.reply(`Deleted course ${courseChannelRole.name}.`);
+        logger.info(`Deleted course ${courseChannelRole.name}`);
     }   
 };

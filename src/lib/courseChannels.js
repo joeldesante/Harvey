@@ -91,16 +91,37 @@ export async function linkExistingCourseChannel(channelId, joinMessageId, roleId
  * Deletes the course channel and related roles.
  * @param {String} roleId 
  */
-export async function deleteCourseChannel(roleId) {
+export async function deleteCourseChannel(roleId, guild) {
     const course = await Course.findOne({
         where: { roleId }
     });
 
-    // Fetch the join channel and then delete the message
+    if (!course) {
+        throw new Error("No course found for the given role.");
+    }
 
-    // Fetch the course channel and then move it to an archive or just delete it tbh
+    const courseRoleSetting = await CourseRolesSetting.findOne({
+        where: { guild: guild.id }
+    });
 
-    // Fetch the role and then delete that shit
+    if(!courseRoleSetting) {
+        throw new Error("Join channel is misconfigured.");
+    }
 
-    // Now delete the record of the course and your done!
+    const joinChannelId = courseRoleSetting.roleSelectionChannelId;
+    const joinChannel = await guild.channels.fetch(joinChannel);
+
+    const messageId = course.messageId;
+    const joinMessage = await joinChannel.messages.fetch();
+    await joinMessage.delete();
+
+    const channelId = course.channelId;
+    const channel = await guild.channels.fetch(channelId);
+    await channel.delete();
+
+    const roleId = course.roleId;
+    const role = await guild.roles.fetch(roleId);
+    await role.delete();
+
+    await course.destroy();
 }
