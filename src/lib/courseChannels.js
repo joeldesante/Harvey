@@ -112,7 +112,7 @@ export async function deleteCourseChannel(roleId, guild) {
     const joinChannel = await guild.channels.fetch(joinChannelId);
 
     const messageId = course.messageId;
-    const joinMessage = await joinChannel.messages.fetch();
+    const joinMessage = await joinChannel.messages.fetch(messageId);
     await joinMessage.delete();
 
     const channelId = course.channelId;
