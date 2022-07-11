@@ -44,7 +44,8 @@ export async function createCourseChannel(name, guild) {
         throw new Error("Could not send message to join message channel as it is not text based.");
     }*/
 
-    name = _.camelCase(name);
+    name = _.upperCase(name);
+    name = name.replace(/ /g, "");
 
     const role = await guild.roles.create({ name });
     role.setHoist(true);
@@ -60,7 +61,8 @@ export async function createCourseChannel(name, guild) {
         VIEW_CHANNEL: false
     });
 
-    const joinMessage = await joinMessageChannel.send(`**${_.upperCase(name)} <@&${role.id}>**`);
+    const joinMessage = await joinMessageChannel.send(`**${name}** <@&${role.id}>`);
+    // **CS487** @CS487
     await joinMessage.react('👍');
 
     // Create the database entry
