@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, SlashCommandRoleOption, SlashCommandStringOption } from '@discordjs/builders';
-import { createCourseChannel } from '../lib/courseChannels.js';
+import { deleteCourseChannel } from '../lib/courseChannels.js';
 import { logger } from '../logger.js';
 
 export default {
@@ -14,7 +14,7 @@ export default {
         .setDefaultMemberPermissions(0)
         .setDMPermission(false),
     onTriggered: async function(interaction) {
-        const courseChannelRole = interaction.options.getString("course-role");
+        const courseChannelRole = interaction.options.getRole("course-role");
         await deleteCourseChannel(courseChannelRole.id, interaction.guild);
         interaction.reply(`Deleted course ${courseChannelRole.name}.`);
         logger.info(`Deleted course ${courseChannelRole.name}`);

@@ -101,7 +101,7 @@ export async function deleteCourseChannel(roleId, guild) {
     }
 
     const courseRoleSetting = await CourseRolesSetting.findOne({
-        where: { guild: guild.id }
+        where: { guildId: guild.id }
     });
 
     if(!courseRoleSetting) {
@@ -109,7 +109,7 @@ export async function deleteCourseChannel(roleId, guild) {
     }
 
     const joinChannelId = courseRoleSetting.roleSelectionChannelId;
-    const joinChannel = await guild.channels.fetch(joinChannel);
+    const joinChannel = await guild.channels.fetch(joinChannelId);
 
     const messageId = course.messageId;
     const joinMessage = await joinChannel.messages.fetch();
