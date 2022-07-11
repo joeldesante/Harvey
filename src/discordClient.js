@@ -15,7 +15,7 @@ client.once('ready', async () =>  {
     logger.info("Harvey has logged in and is ready.");
     logger.info("Registering discord commands.");
     registeredCommands.forEach(async command => {
-        await client.application.commands.create(command.body.toJSON(), "750034125464797216");        // TODO: Make it so it will register globally when in production mode.
+        await client.application.commands.create(command.body.toJSON(), process.env.GUILD);        // TODO: Make it so it will register globally when in production mode.
         client.on('interactionCreate', async interaction => {
             if (!interaction.isCommand()) return;
             const { commandName } = interaction;
