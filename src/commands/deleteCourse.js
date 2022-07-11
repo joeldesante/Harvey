@@ -15,7 +15,7 @@ export default {
         .setDMPermission(false),
     onTriggered: async function(interaction) {
         const courseChannelRole = interaction.options.getString("course-role");
-        await deleteCourseChannel(courseChannelRole.id);
+        await deleteCourseChannel(courseChannelRole.id, interaction.guild);
         interaction.reply(`Deleted course ${courseChannelRole.name}.`);
         logger.info(`Deleted course ${courseChannelRole.name}`);
     }   
