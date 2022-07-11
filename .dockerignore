@@ -6,3 +6,4 @@ npm-debug.log
 # In docker, env should be handled from the image itself.
 .env
 .env.example
+corde.config.json

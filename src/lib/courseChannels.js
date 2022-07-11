@@ -93,7 +93,7 @@ export async function linkExistingCourseChannel(channelId, joinMessageId, roleId
  */
 export async function deleteCourseChannel(roleId, guild) {
     const course = await Course.findOne({
-        where: { roleId }
+        where: { roleId: roleId }
     });
 
     if (!course) {
@@ -119,7 +119,6 @@ export async function deleteCourseChannel(roleId, guild) {
     const channel = await guild.channels.fetch(channelId);
     await channel.delete();
 
-    const roleId = course.roleId;
     const role = await guild.roles.fetch(roleId);
     await role.delete();
 
