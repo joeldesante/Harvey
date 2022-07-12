@@ -126,3 +126,15 @@ export async function deleteCourseChannel(roleId, guild) {
 
     await course.destroy();
 }
+
+export async function unlinkExistingCourseChannel(roleId, guild) {
+    const course = await Course.findOne({
+        where: { roleId: roleId }
+    });
+
+    if (!course) {
+        throw new Error("No course found for the given role.");
+    }
+
+    await course.destroy();
+}
