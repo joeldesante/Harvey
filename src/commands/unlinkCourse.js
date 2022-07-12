@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, SlashCommandChannelOption, SlashCommandRoleOption, SlashCommandStringOption } from '@discordjs/builders';
-import { linkExistingCourseChannel } from '../lib/courseChannels.js';
+import { unlinkExistingCourseChannel } from '../lib/courseChannels.js';
 
 export default {
     body: new SlashCommandBuilder()

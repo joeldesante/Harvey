@@ -127,7 +127,7 @@ export async function deleteCourseChannel(roleId, guild) {
     await course.destroy();
 }
 
-export async function deleteCourseChannel(roleId, guild) {
+export async function unlinkExistingCourseChannel(roleId, guild) {
     const course = await Course.findOne({
         where: { roleId: roleId }
     });
