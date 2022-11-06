@@ -51,14 +51,14 @@ export async function createCourseChannel(name, guild) {
     role.setHoist(true);
     role.setMentionable(true);
 
-    const courseChannel = await guild.channels.create(name);
+    const courseChannel = await guild.channels.create({ name });
     await courseChannel.setParent(courseRoleSettings.courseChatCategoryId, { lockPermissions: false });
     await courseChannel.permissionOverwrites.edit(role, {
-        VIEW_CHANNEL: true
+        ViewChannel: true
     });
 
     await courseChannel.permissionOverwrites.edit(guild.roles.everyone, {
-        VIEW_CHANNEL: false
+        ViewChannel: false
     });
 
     const joinMessage = await joinMessageChannel.send(`**${name}** <@&${role.id}>`);
