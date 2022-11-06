@@ -1,12 +1,12 @@
-import { Client, Intents } from "discord.js";
+import { Client, GatewayIntentBits } from "discord.js";
 import registeredCommands from "./commands/registeredCommands.js";
 import { logger } from "./logger.js";
 
 const client = new Client({ 
-    intents: [ 
-        Intents.FLAGS.GUILDS, 
-        Intents.FLAGS.GUILD_MESSAGES,
-        Intents.FLAGS.GUILD_MESSAGE_REACTIONS
+    intents: [
+        GatewayIntentBits.GUILDS,
+        GatewayIntentBits.GUILD_MESSAGES,
+        GatewayIntentBits.GUILD_MESSAGE_REACTIONS
     ],
     partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
 });
