@@ -1,25 +1,21 @@
-import { Client, GatewayIntentBits, Partials } from "discord.js";
+import { Client, Intents } from "discord.js";
 import registeredCommands from "./commands/registeredCommands.js";
 import { logger } from "./logger.js";
 
 const client = new Client({ 
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.GuildMessageReactions
+    intents: [ 
+        Intents.FLAGS.GUILDS, 
+        Intents.FLAGS.GUILD_MESSAGES,
+        Intents.FLAGS.GUILD_MESSAGE_REACTIONS
     ],
-    partials: [
-        Partials.Message,
-        Partials.Channel,
-        Partials.Reaction
-    ],
+    partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
 });
 
 client.once('ready', async () =>  {
     logger.info("Harvey has logged in and is ready.");
     logger.info("Registering discord commands.");
     registeredCommands.forEach(async command => {
-        await client.application.commands.create(command.body.toJSON(), process.env.GUILD);        // TODO: Make it so it will register globally when in production mode.
+        await client.application.commands.create(command.body.toJSON(), process.env.PROD ? undefined : process.env.GUILD);
         client.on('interactionCreate', async interaction => {
             if (!interaction.isCommand()) return;
             const { commandName } = interaction;
