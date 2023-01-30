@@ -21,7 +21,6 @@ export default {
                 channelId: interaction.options.getChannel("welcome-channel").id
             });
             logger.info("Welcome channel has been created.");
-            await interaction.client.emit("guildMemberAdd", interaction.member);
             return interaction.reply("Welcome channel has been set.");
         }
         await welcomeChannelSettings.update({

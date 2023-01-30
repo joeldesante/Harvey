@@ -6,6 +6,6 @@ export function registerWelcomeHandler(client) {
         if(!welcomeChannelSettings) return;
         const welcomeChannel = member.guild.channels.cache.get(welcomeChannelSettings.channelId);
         if (!welcomeChannel) return;
-        await welcomeChannel.send(`Welcome to the server, ${member}!\nhttps://media.discordapp.net/stickers/992818058525671454.png?size=160`);
+        welcomeChannel.send({ files: ['src/assets/welcome-sticker.png'], content: 'Welcome to the server!' });
     });   
 }
