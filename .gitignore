@@ -4,6 +4,7 @@
 /node_modules
 /logs/**/*
 /data/**/*
+!/data/topics.csv
 package-lock.json
 corde.config.json
 .env

@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, SlashCommandChannelOption } from '@discordjs/builders';
 import { logger } from '../logger.js';
-import { WelcomeChannel } from '../models/welcomeChannel.js';
+import { WelcomeChannel } from '../models/configuration_models/welcomeChannelSetting.js';
 
 export default {
     body: new SlashCommandBuilder()
