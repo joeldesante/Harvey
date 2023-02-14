@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as csv from 'csv/sync';
-import { logger } from "../logger";
+import { logger } from "../logger.js";
 import path from "path";
 
 
