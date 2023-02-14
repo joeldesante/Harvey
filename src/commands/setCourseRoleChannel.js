@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, SlashCommandChannelOption } from '@discordjs/builders';
 import { logger } from '../logger.js';
-import { CourseRolesSetting } from '../models/courseRolesSetting.js';
+import { CourseRolesSetting } from '../models/configuration_models/courseRolesSetting.js';
 
 export default {
     body: new SlashCommandBuilder()
