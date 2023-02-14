@@ -1,7 +1,7 @@
 import { logger } from "../logger.js";
 import _ from "lodash";
 import { Course } from "../models/course.js";
-import { CourseRolesSetting } from "../models/courseRolesSetting.js";
+import { CourseRolesSetting } from "../models/configuration_models/courseRolesSetting.js";
 
 //import {inspect} from "util";
 
