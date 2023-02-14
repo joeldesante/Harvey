@@ -1,5 +1,6 @@
 import { SlashCommandBuilder, SlashCommandChannelOption, SlashCommandRoleOption, SlashCommandStringOption } from '@discordjs/builders';
 import { linkExistingCourseChannel } from '../lib/courseChannels.js';
+import { messageEmbed } from '../lib/messageEmbed.js';
 
 export default {
     body: new SlashCommandBuilder()
@@ -37,6 +38,6 @@ export default {
             interaction.options.getRole("course-role").id,
             interaction.options.getString("course-name")
         );
-        interaction.reply("Linked role successfully");
+        interaction.reply({embeds: [messageEmbed("Linked role successfully", "GREEN")]});
     }   
 };

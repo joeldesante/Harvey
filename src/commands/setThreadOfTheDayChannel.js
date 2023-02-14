@@ -1,6 +1,7 @@
 import { SlashCommandBuilder, SlashCommandChannelOption } from '@discordjs/builders';
 import { logger } from '../logger.js';
 import { ThreadOfTheDayChannelSetting } from '../models/configuration_models/threadOfTheDayChannelSetting.js';
+import { messageEmbed } from '../lib/messageEmbed.js';
 
 export default {
     body: new SlashCommandBuilder()
@@ -21,12 +22,12 @@ export default {
                 channelId: interaction.options.getChannel("totd-channel").id
             });
             logger.info("TOTD channel has been created.");
-            return interaction.reply("TOTD channel has been set.");
+            return interaction.reply({ embeds: [messageEmbed("TOTD channel has been created.", "GREEN")]});
         }
         await totdChannelSettings.update({
             channelId: interaction.options.getChannel("totd-channel").id
         });
         logger.info("TOTD channel has been set.");
-        interaction.reply("TOTD channel has been updated.");
+        interaction.reply({ embeds: [messageEmbed("TOTD channel has been updated.", "GREEN")]});
     }
 };

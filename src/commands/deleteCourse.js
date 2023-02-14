@@ -1,5 +1,6 @@
 import { SlashCommandBuilder, SlashCommandRoleOption, SlashCommandStringOption } from '@discordjs/builders';
 import { deleteCourseChannel } from '../lib/courseChannels.js';
+import { messageEmbed } from '../lib/messageEmbed.js';
 import { logger } from '../logger.js';
 
 export default {
@@ -16,7 +17,7 @@ export default {
     onTriggered: async function(interaction) {
         const courseChannelRole = interaction.options.getRole("course-role");
         await deleteCourseChannel(courseChannelRole.id, interaction.guild);
-        interaction.reply(`Deleted course ${courseChannelRole.name}.`);
+        interaction.reply({embeds: [messageEmbed(`Deleted course ${courseChannelRole.name}.`, "GREEN")]});
         logger.info(`Deleted course ${courseChannelRole.name}`);
     }   
 };
