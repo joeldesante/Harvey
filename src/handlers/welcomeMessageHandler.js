@@ -1,4 +1,4 @@
-import { WelcomeChannel } from "../models/configuration_models/welcomeChannelSetting";
+import { WelcomeChannel } from "../models/configuration_models/welcomeChannelSetting.js";
 
 export function registerWelcomeHandler(client) {
     client.on('guildMemberAdd', async (member) => {

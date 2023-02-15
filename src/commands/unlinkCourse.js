@@ -1,5 +1,6 @@
 import { SlashCommandBuilder, SlashCommandChannelOption, SlashCommandRoleOption, SlashCommandStringOption } from '@discordjs/builders';
 import { unlinkExistingCourseChannel } from '../lib/courseChannels.js';
+import { messageEmbed } from '../lib/messageEmbed.js';
 
 export default {
     body: new SlashCommandBuilder()
@@ -17,6 +18,6 @@ export default {
         await unlinkExistingCourseChannel(
             interaction.options.getRole("course-role").id
         );
-        interaction.reply("Unlinked role successfully");
+        interaction.reply({embeds: [messageEmbed("Unlinked role successfully", "GREEN")]});
     }   
 };

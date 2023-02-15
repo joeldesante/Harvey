@@ -1,6 +1,7 @@
 import { SlashCommandBuilder, SlashCommandStringOption } from '@discordjs/builders';
 import { createCourseChannel } from '../lib/courseChannels.js';
 import { logger } from '../logger.js';
+import { messageEmbed } from '../lib/messageEmbed.js';
 
 export default {
     body: new SlashCommandBuilder()
@@ -16,7 +17,7 @@ export default {
     onTriggered: async function(interaction) {
         const courseChannelName = interaction.options.getString("name");
         await createCourseChannel(courseChannelName, interaction.guild);
-        interaction.reply(`Created course channel ${courseChannelName}`);
+        interaction.reply({ embeds: [messageEmbed(`Created course channel ${courseChannelName}`, "GREEN")]});
         logger.info(`Created course channel ${courseChannelName}`);
     }   
 };

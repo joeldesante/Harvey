@@ -7,9 +7,9 @@
  * Please do not add code which is fairly resource intensive as it will be executed fairly regularly.
  */
 
-import { getRandomThreadTopic } from "../lib/threadOfTheDay";
-import { logger } from "../logger";
-import { ThreadOfTheDayChannelSetting } from "../models/configuration_models/threadOfTheDayChannelSetting";
+import { getRandomThreadTopic } from "../lib/threadOfTheDay.js";
+import { logger } from "../logger.js";
+import { ThreadOfTheDayChannelSetting } from "../models/configuration_models/threadOfTheDayChannelSetting.js";
 
 
 async function heartbeat(client) {

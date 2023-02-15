@@ -1,6 +1,7 @@
 import { SlashCommandBuilder, SlashCommandChannelOption } from '@discordjs/builders';
 import { logger } from '../logger.js';
 import { WelcomeChannel } from '../models/configuration_models/welcomeChannelSetting.js';
+import { messageEmbed } from '../lib/messageEmbed.js';
 
 export default {
     body: new SlashCommandBuilder()
@@ -21,12 +22,12 @@ export default {
                 channelId: interaction.options.getChannel("welcome-channel").id
             });
             logger.info("Welcome channel has been created.");
-            return interaction.reply("Welcome channel has been set.");
+            return interaction.reply({ embeds: [messageEmbed("Welcome channel has been created.", "GREEN")]});
         }
         await welcomeChannelSettings.update({
             channelId: interaction.options.getChannel("welcome-channel").id
         });
         logger.info("Welcome channel has been set.");
-        interaction.reply("Welcome channel has been updated.");
+        interaction.reply({ embeds: [messageEmbed("Welcome channel has been updated.", "GREEN")]});
     }
 };
