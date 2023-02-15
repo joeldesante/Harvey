@@ -1,6 +1,7 @@
 import { SlashCommandBuilder, SlashCommandChannelOption } from '@discordjs/builders';
 import { logger } from '../logger.js';
 import { CourseRolesSetting } from '../models/configuration_models/courseRolesSetting.js';
+import { messageEmbed } from '../lib/messageEmbed.js';
 
 export default {
     body: new SlashCommandBuilder()
@@ -28,7 +29,7 @@ export default {
             });
             
             logger.info("Role selection channel has been created.");
-            interaction.reply("Role selection channel has been set.");
+            interaction.reply({embeds: [messageEmbed("Role selection channel has been created.", "GREEN")]});
             return;
         }
 
@@ -37,6 +38,6 @@ export default {
         });
 
         logger.info("Role selection channel has been set.");
-        interaction.reply("Role selection channel has been updated.");
+        interaction.reply({embeds: [messageEmbed("Role selection channel has been updated.", "GREEN")]});
     }   
 };
