@@ -2,6 +2,7 @@ import { logger } from "../logger.js";
 import _ from "lodash";
 import { Course } from "../models/course.js";
 import { CourseRolesSetting } from "../models/configuration_models/courseRolesSetting.js";
+const colorConvert = require('color-convert');
 
 //import {inspect} from "util";
 
@@ -163,34 +164,25 @@ function updateCourseColors(guild) {
  * @param {String} courseName
  */
 function getCourseColors(courses) {
-    // sort the list alphabetically
     const sortedClassNames = courses.sort();
 
     // define the start and end colors of the gradient
-    const startColor = [255, 0, 0]; // red
-    const endColor = [128, 0, 128]; // purple
+    const startHue = 0; // red
+    const endHue = 300; // purple
+    const saturation = 100;
+    const lightness = 50;
 
     // compute the color gradient
     const numClasses = sortedClassNames.length;
     const colors = [];
     for (let i = 0; i < numClasses; i++) {
-    // compute the color for this class
-        const r = startColor[0] + (endColor[0] - startColor[0]) * i / (numClasses - 1);
-        const g = startColor[1] + (endColor[1] - startColor[1]) * i / (numClasses - 1);
-        const b = startColor[2] + (endColor[2] - startColor[2]) * i / (numClasses - 1);
-        const color = '#' + rgbToHex(r, g, b);
-        colors.push(color);
+        // compute the hue for this class
+        const hue = startHue + (endHue - startHue) * i / (numClasses - 1);
+        const hsl = [hue, saturation, lightness];
+        colors.push(hsl);
     }
 
     // map the sorted class names to their corresponding colors
-    const colorMap = Object.fromEntries(sortedClassNames.map((name, i) => [name, colors[i]]));
+    const colorMap = Object.fromEntries(sortedClassNames.map((name, i) => [name, colorConvert.hsl.hex(colors[i])]));
     return colorMap;
-    // utility function to convert RGB values to hex string
-    function rgbToHex(r, g, b) {
-        const componentToHex = (c) => {
-            const hex = c.toString(16);
-            return hex.length === 1 ? '0' + hex : hex;
-        };
-        return componentToHex(Math.round(r)) + componentToHex(Math.round(g)) + componentToHex(Math.round(b));
-    }
 }
