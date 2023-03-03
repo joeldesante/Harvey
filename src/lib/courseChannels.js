@@ -47,12 +47,10 @@ export async function createCourseChannel(name, guild) {
     name = _.upperCase(name);
     name = name.replace(/ /g, "");
 
-    const color = getColorFromCourse(name);
-
     const role = await guild.roles.create({ name });
     role.setHoist(true);
     role.setMentionable(true);
-    role.setColor(color);
+
 
     const courseChannel = await guild.channels.create(name);
     await courseChannel.setParent(courseRoleSettings.courseChatCategoryId, { lockPermissions: false });
@@ -75,6 +73,9 @@ export async function createCourseChannel(name, guild) {
         roleId: role.id,
         messageId: joinMessage.id
     });
+
+    // update the colors of the course channels
+    updateCourseColors(guild);
 }
 
 /**
@@ -143,10 +144,25 @@ export async function unlinkExistingCourseChannel(roleId, guild) {
 }
 
 /**
+ * Updates the colors of the course roles in the server
+ */
+function updateCourseColors(guild) {
+    Course.findAll().then(courses => {
+        const courseNames = courses.map(course => course.name);
+        const courseColors = getCourseColors(courseNames);
+
+        courses.forEach(course => {
+            const role = guild.roles.resolve(course.roleId);
+            role.setColor(courseColors[course.name]);
+        });
+    });
+}
+
+/**
  * Extracts the first number from a string.
  * @param {String} courseName
  */
-function getColorFromCourses(courses) {
+function getCourseColors(courses) {
     // sort the list alphabetically
     const sortedClassNames = courses.sort();
 
