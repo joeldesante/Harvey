@@ -184,9 +184,7 @@ function getCourseColors(courses) {
 
     // map the sorted class names to their corresponding colors
     const colorMap = Object.fromEntries(sortedClassNames.map((name, i) => [name, colors[i]]));
-
-    console.log(colorMap);
-
+    return colorMap;
     // utility function to convert RGB values to hex string
     function rgbToHex(r, g, b) {
         const componentToHex = (c) => {
