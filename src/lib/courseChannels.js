@@ -2,7 +2,7 @@ import { logger } from "../logger.js";
 import _ from "lodash";
 import { Course } from "../models/course.js";
 import { CourseRolesSetting } from "../models/configuration_models/courseRolesSetting.js";
-const colorConvert = require('color-convert');
+import colorConvert from "color-convert";
 
 //import {inspect} from "util";
 
