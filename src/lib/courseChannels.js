@@ -2,7 +2,6 @@ import { logger } from "../logger.js";
 import _ from "lodash";
 import { Course } from "../models/course.js";
 import { CourseRolesSetting } from "../models/configuration_models/courseRolesSetting.js";
-import colorConvert from "color-convert";
 
 //import {inspect} from "util";
 
@@ -147,17 +146,37 @@ export async function unlinkExistingCourseChannel(roleId, guild) {
  * Extracts the first number from a string.
  * @param {String} courseName
  */
-function getColorFromCourse(courseName) {
-    // static variables
-    const MINVALUE = 112;
-    const MAXVALUE = 500;
-    
-    // get number from course name
-    const match = courseName.match(/\d+/);
-    if (!match) throw new Error("Number not found in course name.");
-    const value = parseInt(match[0], 10);
-    
-    // get color from number
-    const hue = (value - MINVALUE) / (MAXVALUE - MINVALUE) * 300;
-    return colorConvert.rgb.hsl(hue, 100, 50);
+function getColorFromCourses(courses) {
+    // sort the list alphabetically
+    const sortedClassNames = courses.sort();
+
+    // define the start and end colors of the gradient
+    const startColor = [255, 0, 0]; // red
+    const endColor = [128, 0, 128]; // purple
+
+    // compute the color gradient
+    const numClasses = sortedClassNames.length;
+    const colors = [];
+    for (let i = 0; i < numClasses; i++) {
+    // compute the color for this class
+        const r = startColor[0] + (endColor[0] - startColor[0]) * i / (numClasses - 1);
+        const g = startColor[1] + (endColor[1] - startColor[1]) * i / (numClasses - 1);
+        const b = startColor[2] + (endColor[2] - startColor[2]) * i / (numClasses - 1);
+        const color = '#' + rgbToHex(r, g, b);
+        colors.push(color);
+    }
+
+    // map the sorted class names to their corresponding colors
+    const colorMap = Object.fromEntries(sortedClassNames.map((name, i) => [name, colors[i]]));
+
+    console.log(colorMap);
+
+    // utility function to convert RGB values to hex string
+    function rgbToHex(r, g, b) {
+        const componentToHex = (c) => {
+            const hex = c.toString(16);
+            return hex.length === 1 ? '0' + hex : hex;
+        };
+        return componentToHex(Math.round(r)) + componentToHex(Math.round(g)) + componentToHex(Math.round(b));
+    }
 }
