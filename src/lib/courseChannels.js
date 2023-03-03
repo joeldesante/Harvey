@@ -138,3 +138,9 @@ export async function unlinkExistingCourseChannel(roleId, guild) {
 
     await course.destroy();
 }
+
+function extractNumberFromString(string) {
+    const match = string.match(/\d+/);
+    if (match) return parseInt(match[0], 10);
+    return null;
+}
