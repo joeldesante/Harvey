@@ -2,6 +2,7 @@ import { logger } from "../logger.js";
 import _ from "lodash";
 import { Course } from "../models/course.js";
 import { CourseRolesSetting } from "../models/configuration_models/courseRolesSetting.js";
+import colorConvert from "color-convert";
 
 //import {inspect} from "util";
 
@@ -47,9 +48,12 @@ export async function createCourseChannel(name, guild) {
     name = _.upperCase(name);
     name = name.replace(/ /g, "");
 
+    const color = getColorFromCourse(name);
+
     const role = await guild.roles.create({ name });
     role.setHoist(true);
     role.setMentionable(true);
+    role.setColor(color);
 
     const courseChannel = await guild.channels.create(name);
     await courseChannel.setParent(courseRoleSettings.courseChatCategoryId, { lockPermissions: false });
@@ -139,8 +143,21 @@ export async function unlinkExistingCourseChannel(roleId, guild) {
     await course.destroy();
 }
 
-function extractNumberFromString(string) {
-    const match = string.match(/\d+/);
-    if (match) return parseInt(match[0], 10);
-    return null;
+/**
+ * Extracts the first number from a string.
+ * @param {String} courseName
+ */
+function getColorFromCourse(courseName) {
+    // static variables
+    const MINVALUE = 112;
+    const MAXVALUE = 500;
+    
+    // get number from course name
+    const match = courseName.match(/\d+/);
+    if (!match) throw new Error("Number not found in course name.");
+    const value = parseInt(match[0], 10);
+    
+    // get color from number
+    const hue = (value - MINVALUE) / (MAXVALUE - MINVALUE) * 300;
+    return colorConvert.rgb.hsl(hue, 100, 50);
 }
