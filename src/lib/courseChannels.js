@@ -147,14 +147,33 @@ export async function unlinkExistingCourseChannel(roleId, guild) {
 /**
  * Updates the colors of the course roles in the server
  */
-function updateCourseColors(guild) {
-    Course.findAll().then(courses => {
-        const courseNames = courses.map(course => course.name);
-        const courseColors = getCourseColors(courseNames);
-
-        courses.forEach(course => {
-            const role = guild.roles.resolve(course.roleId);
-            role.setColor(courseColors[course.name]);
+export function updateCourseColors(guild) {
+    return new Promise((resolve, reject) => {
+        Course.findAll().then(courses => {
+            const courseNames = courses.map(course => course.name);
+            const courseColors = getCourseColors(courseNames);
+    
+            const roleUpdates = courses.map(course => {
+                const role = guild.roles.resolve(course.roleId);
+                if (!role) {
+                    reject(`Role with ID ${course.roleId} not found in guild`);
+                }
+                const color = courseColors[course.name];
+                if (!color) {
+                    reject(`No color found for course ${course.name}`);
+                }
+                return role.setColor(color);
+            });
+        
+            Promise.all(roleUpdates)
+                .then(() => {
+                    resolve(`Course colors updated successfully`);
+                })
+                .catch(err => {
+                    reject(err);
+                });
+        }).catch(err => {
+            reject(`Error fetching courses: ${err}`);
         });
     });
 }
