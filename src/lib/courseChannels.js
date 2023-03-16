@@ -2,6 +2,7 @@ import { logger } from "../logger.js";
 import _ from "lodash";
 import { Course } from "../models/course.js";
 import { CourseRolesSetting } from "../models/configuration_models/courseRolesSetting.js";
+import colorConvert from "color-convert";
 
 //import {inspect} from "util";
 
@@ -51,6 +52,7 @@ export async function createCourseChannel(name, guild) {
     role.setHoist(true);
     role.setMentionable(true);
 
+
     const courseChannel = await guild.channels.create(name);
     await courseChannel.setParent(courseRoleSettings.courseChatCategoryId, { lockPermissions: false });
     await courseChannel.permissionOverwrites.edit(role, {
@@ -72,6 +74,9 @@ export async function createCourseChannel(name, guild) {
         roleId: role.id,
         messageId: joinMessage.id
     });
+
+    // update the colors of the course channels
+    updateCourseColors(guild);
 }
 
 /**
@@ -137,4 +142,66 @@ export async function unlinkExistingCourseChannel(roleId, guild) {
     }
 
     await course.destroy();
+}
+
+/**
+ * Updates the colors of the course roles in the server
+ */
+export function updateCourseColors(guild) {
+    return new Promise((resolve, reject) => {
+        Course.findAll().then(courses => {
+            const courseNames = courses.map(course => course.name);
+            const courseColors = getCourseColors(courseNames);
+    
+            const roleUpdates = courses.map(course => {
+                const role = guild.roles.resolve(course.roleId);
+                if (!role) {
+                    reject(`Role with ID ${course.roleId} not found in guild`);
+                }
+                const color = courseColors[course.name];
+                if (!color) {
+                    reject(`No color found for course ${course.name}`);
+                }
+                return role.setColor(color);
+            });
+        
+            Promise.all(roleUpdates)
+                .then(() => {
+                    resolve(`Course colors updated successfully`);
+                })
+                .catch(err => {
+                    reject(err);
+                });
+        }).catch(err => {
+            reject(`Error fetching courses: ${err}`);
+        });
+    });
+}
+
+/**
+ * Extracts the first number from a string.
+ * @param {String} courseName
+ */
+function getCourseColors(courses) {
+    const sortedClassNames = courses.sort();
+
+    // define the start and end colors of the gradient
+    const startHue = 0; // red
+    const endHue = 300; // purple
+    const saturation = 100;
+    const lightness = 50;
+
+    // compute the color gradient
+    const numClasses = sortedClassNames.length;
+    const colors = [];
+    for (let i = 0; i < numClasses; i++) {
+        // compute the hue for this class
+        const hue = startHue + (endHue - startHue) * i / (numClasses - 1);
+        const hsl = [hue, saturation, lightness];
+        colors.push(hsl);
+    }
+
+    // map the sorted class names to their corresponding colors
+    const colorMap = Object.fromEntries(sortedClassNames.map((name, i) => [name, colorConvert.hsl.hex(colors[i])]));
+    return colorMap;
 }
