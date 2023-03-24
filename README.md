@@ -57,4 +57,4 @@ Joel DeSante
 https://desante.dev
 
 William Faircloth
-https://www.willuhmjs.com/
+https://willuhmjs.com/
