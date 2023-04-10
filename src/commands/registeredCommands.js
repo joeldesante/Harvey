@@ -9,6 +9,7 @@ import setCourseRoleChannel from "./setCourseRoleChannel.js";
 import deleteCourse from "./deleteCourse.js";
 import setWelcomeChannel from "./setWelcomeChannel.js";
 import setThreadOfTheDayChannel from "./setThreadOfTheDayChannel.js";
+import updateCourses from "./updateCourses.js";
 
 export default [
     createCourse,
@@ -17,5 +18,6 @@ export default [
     deleteCourse,
     unlinkCourse,
     setWelcomeChannel,
-    setThreadOfTheDayChannel
+    setThreadOfTheDayChannel,
+    updateCourses
 ];
