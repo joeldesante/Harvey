@@ -16,7 +16,7 @@ export default {
         .setDMPermission(false),
     onTriggered: async function(interaction) {
         const courseChannelRole = interaction.options.getRole("course-role");
-        await deleteCourseChannel(courseChannelRole.id, interaction.guild);
+        await deleteCourseChannel(courseChannelRole.id, interaction);
         interaction.reply({embeds: [messageEmbed(`Deleted course ${courseChannelRole.name}.`, "GREEN")]});
         logger.info(`Deleted course ${courseChannelRole.name}`);
     }   

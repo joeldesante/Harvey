@@ -48,3 +48,13 @@ npm install
 ```
 npm start
 ```
+
+----
+
+## Core Project Maintainers (Credits)
+
+Joel DeSante
+https://desante.dev
+
+William Faircloth
+https://willuhmjs.com/

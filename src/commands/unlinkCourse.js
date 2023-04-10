@@ -16,7 +16,8 @@ export default {
         .setDMPermission(false),
     onTriggered: async function(interaction) {
         await unlinkExistingCourseChannel(
-            interaction.options.getRole("course-role").id
+            interaction.options.getRole("course-role").id,
+            interaction
         );
         interaction.reply({embeds: [messageEmbed("Unlinked role successfully", "GREEN")]});
     }   

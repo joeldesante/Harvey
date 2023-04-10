@@ -2,6 +2,7 @@ import { logger } from "../logger.js";
 import _ from "lodash";
 import { Course } from "../models/course.js";
 import { CourseRolesSetting } from "../models/configuration_models/courseRolesSetting.js";
+import { messageEmbed } from "./messageEmbed.js";
 import colorConvert from "color-convert";
 
 //import {inspect} from "util";
@@ -31,11 +32,12 @@ export async function removeUserFromCourseChannel(guild, user, course) {
  * @param {string} name The name of the course and the course role.
  * @param {Guild} guild The guild in which the channel is being created for.
  */
-export async function createCourseChannel(name, guild) {
+export async function createCourseChannel(name, interaction) {
+    const guild = interaction.guild;
 
     const courseRoleSettings = await CourseRolesSetting.findOne({ where: { guildId: guild.id } });
     if(courseRoleSettings === null) {
-        throw new Error("Course role settings are not configured.");
+        interaction.reply({ embeds: [messageEmbed("Course role settings are not configured.", "RED")]});
     }
 
     const joinMessageChannel = await guild.channels.fetch(courseRoleSettings.roleSelectionChannelId);
@@ -98,13 +100,15 @@ export async function linkExistingCourseChannel(channelId, joinMessageId, roleId
  * Deletes the course channel and related roles.
  * @param {String} roleId 
  */
-export async function deleteCourseChannel(roleId, guild) {
+export async function deleteCourseChannel(roleId, interaction) {
+    const guild = interaction.guild;
     const course = await Course.findOne({
         where: { roleId: roleId }
     });
 
     if (!course) {
-        throw new Error("No course found for the given role.");
+        //throw new Error("No course found for the given role.");
+        return interaction.reply({ embeds: [messageEmbed("No course found for the given role.", "RED")]});
     }
 
     const courseRoleSetting = await CourseRolesSetting.findOne({
@@ -112,7 +116,8 @@ export async function deleteCourseChannel(roleId, guild) {
     });
 
     if(!courseRoleSetting) {
-        throw new Error("Join channel is misconfigured.");
+        //throw new Error("Join channel is misconfigured.");
+        return interaction.reply({ embeds: [messageEmbed("Join channel is misconfigured.", "RED")]});
     }
 
     const joinChannelId = courseRoleSetting.roleSelectionChannelId;
@@ -132,13 +137,14 @@ export async function deleteCourseChannel(roleId, guild) {
     await course.destroy();
 }
 
-export async function unlinkExistingCourseChannel(roleId, guild) {
+export async function unlinkExistingCourseChannel(roleId, interaction) {
     const course = await Course.findOne({
         where: { roleId: roleId }
     });
 
     if (!course) {
-        throw new Error("No course found for the given role.");
+        //throw new Error("No course found for the given role.");
+        return interaction.reply({ embeds: [messageEmbed("No course found for the given role.", "RED")]});
     }
 
     await course.destroy();
