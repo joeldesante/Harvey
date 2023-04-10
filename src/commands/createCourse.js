@@ -16,7 +16,7 @@ export default {
         .setDMPermission(false),
     onTriggered: async function(interaction) {
         const courseChannelName = interaction.options.getString("name");
-        await createCourseChannel(courseChannelName, interaction.guild);
+        await createCourseChannel(courseChannelName, interaction);
         interaction.reply({ embeds: [messageEmbed(`Created course channel ${courseChannelName}`, "GREEN")]});
         logger.info(`Created course channel ${courseChannelName}`);
     }   
