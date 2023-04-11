@@ -1,8 +1,10 @@
 import _ from "lodash";
+import colorConvert from "color-convert";
 import { logger } from "../logger";
 import { Course } from "../models/course";
 import { CourseRolesSetting } from "../models/configuration_models/courseRolesSetting";
-import type { Guild, GuildMemberResolvable } from "discord.js";
+import { messageEmbed } from "./messageEmbed";
+import type { CommandInteraction, Guild, GuildMemberResolvable } from "discord.js";
 
 //import {inspect} from "util";
 
@@ -17,7 +19,7 @@ export async function addUserToCourseChannel(guild: Guild, user: GuildMemberReso
 }
 
 /**
- * @param {Client} client The Discord bots client.
+ * @param {Guild} guild The Discord guild
  * @param {User} user The Discord user in question.
  * @param {Course} course The database entry for the course.
  */
@@ -27,18 +29,18 @@ export async function removeUserFromCourseChannel(guild: Guild, user: GuildMembe
 }
 
 /**
- * @param {Client} client The Discord bots client.
  * @param {string} name The name of the course and the course role.
- * @param {Guild} guild The guild in which the channel is being created for.
+ * @param {CommandInteraction} interaction
  */
-export async function createCourseChannel(name: string, guild: Guild) {
+export async function createCourseChannel(name: string, interaction: CommandInteraction) {
+    const guild = interaction.guild;
 
-    const courseRoleSettings = await CourseRolesSetting.findOne({ where: { guildId: guild.id } });
+    const courseRoleSettings = await CourseRolesSetting.findOne({ where: { guildId: guild?.id } });
     if(courseRoleSettings === null) {
-        throw new Error("Course role settings are not configured.");
+        interaction.reply({ embeds: [messageEmbed("Course role settings are not configured.", "RED")]});
     }
 
-    const joinMessageChannel = await guild.channels.fetch(courseRoleSettings.roleSelectionChannelId);
+    const joinMessageChannel = await guild?.channels.fetch(courseRoleSettings?.roleSelectionChannelId!);
     
     if (!joinMessageChannel?.isText()) {
         throw new Error("Could not send message to join message channel as it is not text based.");
@@ -47,31 +49,35 @@ export async function createCourseChannel(name: string, guild: Guild) {
     name = _.upperCase(name);
     name = name.replace(/ /g, "");
 
-    const role = await guild.roles.create({ name });
-    role.setHoist(true);
-    role.setMentionable(true);
+    const role = await guild?.roles.create({ name });
+    role?.setHoist(true);
+    role?.setMentionable(true);
 
-    const courseChannel = await guild.channels.create(name);
-    await courseChannel.setParent(courseRoleSettings.courseChatCategoryId, { lockPermissions: false });
-    await courseChannel.permissionOverwrites.edit(role, {
+
+    const courseChannel = await guild?.channels.create(name);
+    await courseChannel?.setParent(courseRoleSettings?.courseChatCategoryId!, { lockPermissions: false });
+    await courseChannel?.permissionOverwrites.edit(role!, {
         VIEW_CHANNEL: true
     });
 
-    await courseChannel.permissionOverwrites.edit(guild.roles.everyone, {
+    await courseChannel?.permissionOverwrites.edit(guild?.roles.everyone!, {
         VIEW_CHANNEL: false
     });
 
-    const joinMessage = await joinMessageChannel?.send(`**${name}** <@&${role.id}>`);
+    const joinMessage = await joinMessageChannel?.send(`**${name}** <@&${role?.id}>`);
     // **CS487** @CS487
     await joinMessage.react('👍');
 
     // Create the database entry
     await Course.create({
         name: name,
-        channelId: courseChannel.id,
-        roleId: role.id,
+        channelId: courseChannel?.id!,
+        roleId: role?.id!,
         messageId: joinMessage.id
     });
+
+    // update the colors of the course channels
+    updateCourseColors(guild);
 }
 
 /**
@@ -93,27 +99,30 @@ export async function linkExistingCourseChannel(channelId: string, joinMessageId
 /**
  * Deletes the course channel and related roles.
  * @param {String} roleId 
- * @param {Guild} guild
+ * @param {CommandInteraction} interaction
  */
-export async function deleteCourseChannel(roleId: string, guild: Guild) {
+export async function deleteCourseChannel(roleId: string, interaction: CommandInteraction) {
+    const guild = interaction.guild;
     const course = await Course.findOne({
         where: { roleId: roleId }
     });
 
     if (!course) {
-        throw new Error("No course found for the given role.");
+        //throw new Error("No course found for the given role.");
+        return interaction.reply({ embeds: [messageEmbed("No course found for the given role.", "RED")]});
     }
 
     const courseRoleSetting = await CourseRolesSetting.findOne({
-        where: { guildId: guild.id }
+        where: { guildId: guild?.id }
     });
 
     if(!courseRoleSetting) {
-        throw new Error("Join channel is misconfigured.");
+        //throw new Error("Join channel is misconfigured.");
+        return interaction.reply({ embeds: [messageEmbed("Join channel is misconfigured.", "RED")]});
     }
 
     const joinChannelId = courseRoleSetting.roleSelectionChannelId;
-    const joinChannel = await guild.channels.fetch(joinChannelId);
+    const joinChannel = await guild?.channels.fetch(joinChannelId);
 
     if (!joinChannel?.isText()) {
         throw new Error("Could not send message to join channel as channel is not text-based.");
@@ -124,23 +133,82 @@ export async function deleteCourseChannel(roleId: string, guild: Guild) {
     await joinMessage.delete();
 
     const channelId = course.channelId;
-    const channel = await guild.channels.fetch(channelId);
+    const channel = await guild?.channels.fetch(channelId);
     await channel?.delete();
 
-    const role = await guild.roles.fetch(roleId);
+    const role = await guild?.roles.fetch(roleId);
     await role?.delete();
 
     await course.destroy();
 }
 
-export async function unlinkExistingCourseChannel(roleId: string, guild: Guild) {
+export async function unlinkExistingCourseChannel(roleId: string, interaction: CommandInteraction) {
     const course = await Course.findOne({
         where: { roleId: roleId }
     });
 
     if (!course) {
-        throw new Error("No course found for the given role.");
+        //throw new Error("No course found for the given role.");
+        return interaction.reply({ embeds: [messageEmbed("No course found for the given role.", "RED")]});
     }
 
     await course.destroy();
+}
+
+/**
+ * Updates the colors of the course roles in the server
+ */
+export function updateCourseColors(guild: Guild) {
+    return new Promise((resolve, reject) => {
+        Course.findAll().then(courses => {
+            const courseNames = courses.map(course => course.name);
+            const courseColors = getCourseColors(courseNames);
+    
+            const roleUpdates = courses.map(course => {
+                const role = guild.roles.resolve(course.roleId);
+                if (!role) {
+                    reject(`Role with ID ${course.roleId} not found in guild`);
+                }
+                const color = courseColors[course.name];
+                if (!color) {
+                    reject(`No color found for course ${course.name}`);
+                }
+                return role?.setColor(color);
+            });
+        
+            Promise.all(roleUpdates)
+                .then(() => {
+                    resolve(`Course colors updated successfully`);
+                })
+                .catch(err => {
+                    reject(err);
+                });
+        }).catch(err => {
+            reject(`Error fetching courses: ${err}`);
+        });
+    });
+}
+
+function getCourseColors(courses: string[]) {
+    const sortedClassNames = courses.sort();
+
+    // define the start and end colors of the gradient
+    const startHue = 0; // red
+    const endHue = 300; // purple
+    const saturation = 100;
+    const lightness = 50;
+
+    // compute the color gradient
+    const numClasses = sortedClassNames.length;
+    const colors: number[][] = [];
+    for (let i = 0; i < numClasses; i++) {
+        // compute the hue for this class
+        const hue = startHue + (endHue - startHue) * i / (numClasses - 1);
+        const hsl = [hue, saturation, lightness];
+        colors.push(hsl);
+    }
+
+    // map the sorted class names to their corresponding colors
+    const colorMap = Object.fromEntries(sortedClassNames.map((name, i) => [name, colorConvert.hsl.hex(colors[i])]));
+    return colorMap;
 }
