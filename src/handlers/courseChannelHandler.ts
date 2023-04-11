@@ -1,8 +1,9 @@
-import { logger } from "../logger.js";
-import { addUserToCourseChannel, removeUserFromCourseChannel } from "../lib/courseChannels.js";
-import { Course } from "../models/course.js";
+import { logger } from "../logger";
+import { addUserToCourseChannel, removeUserFromCourseChannel } from "../lib/courseChannels";
+import { Course } from "../models/course";
+import { Client, User } from "discord.js";
 
-export function registerCourseChannelHandler(client) {
+export function registerCourseChannelHandler(client: Client) {
     client.on('messageReactionAdd', async (reaction, user) => {
         if (reaction.partial) {
             try {
@@ -26,7 +27,12 @@ export function registerCourseChannelHandler(client) {
             return;
         }
 
-        await addUserToCourseChannel(reaction.message.guild, user, targetCourse);
+        if (user instanceof User) {
+            await addUserToCourseChannel(reaction.message.guild!, user, targetCourse);
+        } else {
+            throw new Error('Invalid user.')
+        }
+
     });
     
     client.on('messageReactionRemove', async (reaction, user) => {
@@ -52,6 +58,10 @@ export function registerCourseChannelHandler(client) {
             return;
         }
     
-        await removeUserFromCourseChannel(reaction.message.guild, user, targetCourse);
+        if (user instanceof User) {
+            await removeUserFromCourseChannel(reaction.message.guild!, user, targetCourse);
+        } else {
+            throw new Error('Invalid user.');
+        }
     });   
 }

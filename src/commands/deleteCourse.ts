@@ -1,7 +1,8 @@
-import { SlashCommandBuilder, SlashCommandRoleOption, SlashCommandStringOption } from '@discordjs/builders';
-import { deleteCourseChannel } from '../lib/courseChannels.js';
-import { messageEmbed } from '../lib/messageEmbed.js';
-import { logger } from '../logger.js';
+import { SlashCommandBuilder, SlashCommandRoleOption } from '@discordjs/builders';
+import { deleteCourseChannel } from '../lib/courseChannels';
+import { messageEmbed } from '../lib/messageEmbed';
+import { logger } from '../logger';
+import type { CommandInteraction } from 'discord.js';
 
 export default {
     body: new SlashCommandBuilder()
@@ -14,9 +15,12 @@ export default {
         )
         .setDefaultMemberPermissions(0)
         .setDMPermission(false),
-    onTriggered: async function(interaction) {
+    onTriggered: async function(interaction: CommandInteraction) {
         const courseChannelRole = interaction.options.getRole("course-role");
-        await deleteCourseChannel(courseChannelRole.id, interaction.guild);
+        if (!courseChannelRole) {
+            throw new Error("Unable to obtain course channel role.");
+        }
+        await deleteCourseChannel(courseChannelRole.id, interaction.guild!);
         interaction.reply({embeds: [messageEmbed(`Deleted course ${courseChannelRole.name}.`, "GREEN")]});
         logger.info(`Deleted course ${courseChannelRole.name}`);
     }   
