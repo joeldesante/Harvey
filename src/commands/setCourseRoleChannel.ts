@@ -1,10 +1,10 @@
 import { SlashCommandBuilder, SlashCommandChannelOption } from '@discordjs/builders';
+import { ChannelType } from "discord-api-types/v9";
 import { logger } from '../logger';
 import { CourseRolesSetting } from '../models/configuration_models/courseRolesSetting';
 import { messageEmbed } from '../lib/messageEmbed';
 import type { CommandInteraction } from 'discord.js';
 
-import { ChannelType } from "discord-api-types/v9";
 
 export default {
     body: new SlashCommandBuilder()
@@ -14,12 +14,14 @@ export default {
             .setName("role-channel")
             .setDescription("The channel in which the role selection will exist.")
             .setRequired(true)
+            // @ts-expect-error Poor typing from discord-api-types
             .addChannelTypes(ChannelType.GuildText)
         )
         .addChannelOption(new SlashCommandChannelOption()
             .setName("parent-category")
             .setDescription("The category in which the course chats will reside.")
             .setRequired(true)
+            // @ts-expect-error Poor typing from discord-api-types
             .addChannelTypes(ChannelType.GuildCategory)
         )
         .setDefaultMemberPermissions(0)

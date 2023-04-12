@@ -4,7 +4,8 @@ import { logger } from "../logger";
 import { Course } from "../models/course";
 import { CourseRolesSetting } from "../models/configuration_models/courseRolesSetting";
 import { messageEmbed } from "./messageEmbed";
-import type { CommandInteraction, Guild, GuildMemberResolvable } from "discord.js";
+import type { ColorResolvable, CommandInteraction, Guild, GuildMemberResolvable } from "discord.js";
+import { HexColorString } from "discord.js";
 
 //import {inspect} from "util";
 
@@ -34,6 +35,10 @@ export async function removeUserFromCourseChannel(guild: Guild, user: GuildMembe
  */
 export async function createCourseChannel(name: string, interaction: CommandInteraction) {
     const guild = interaction.guild;
+
+    if (!guild) {
+        throw new Error('Guild not found.');
+    }
 
     const courseRoleSettings = await CourseRolesSetting.findOne({ where: { guildId: guild?.id } });
     if(courseRoleSettings === null) {
@@ -199,16 +204,13 @@ function getCourseColors(courses: string[]) {
     const lightness = 50;
 
     // compute the color gradient
-    const numClasses = sortedClassNames.length;
-    const colors: number[][] = [];
-    for (let i = 0; i < numClasses; i++) {
-        // compute the hue for this class
-        const hue = startHue + (endHue - startHue) * i / (numClasses - 1);
-        const hsl = [hue, saturation, lightness];
-        colors.push(hsl);
-    }
+    const colorMap: Record<string, ColorResolvable> = {};
 
-    // map the sorted class names to their corresponding colors
-    const colorMap = Object.fromEntries(sortedClassNames.map((name, i) => [name, colorConvert.hsl.hex(colors[i])]));
+    sortedClassNames.forEach((className, index, coll) => {
+        const hue = startHue + (endHue - startHue) * index / (coll.length - 1);
+        const hsl: [number, number, number] = [hue, saturation, lightness];
+        colorMap[className] = colorConvert.hsl.hex(hsl) as HexColorString;
+    })
+
     return colorMap;
 }

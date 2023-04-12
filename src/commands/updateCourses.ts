@@ -14,7 +14,7 @@ export default {
         console.log("COMMAND RUNS");
         await interaction.deferReply();
         try {
-            await updateCourseColors(interaction.guild);
+            await updateCourseColors(interaction.guild!);
             interaction.editReply({ embeds: [messageEmbed(`Updated course colors.`, "GREEN")]});
             logger.info(`Updated course colors`);
         } catch (err) {

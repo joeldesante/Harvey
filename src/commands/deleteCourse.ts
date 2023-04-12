@@ -20,7 +20,7 @@ export default {
         if (!courseChannelRole) {
             throw new Error("Unable to obtain course channel role.");
         }
-        await deleteCourseChannel(courseChannelRole.id, interaction.guild!);
+        await deleteCourseChannel(courseChannelRole.id, interaction);
         interaction.reply({embeds: [messageEmbed(`Deleted course ${courseChannelRole.name}.`, "GREEN")]});
         logger.info(`Deleted course ${courseChannelRole.name}`);
     }   

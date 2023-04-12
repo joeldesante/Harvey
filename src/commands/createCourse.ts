@@ -20,7 +20,7 @@ export default {
         if (!courseChannelName) {
             throw new Error("Unable to obtain channel name.");
         }
-        await createCourseChannel(courseChannelName, interaction.guild!);
+        await createCourseChannel(courseChannelName, interaction);
         interaction.reply({ embeds: [messageEmbed(`Created course channel ${courseChannelName}`, "GREEN")]});
         logger.info(`Created course channel ${courseChannelName}`);
     }   
