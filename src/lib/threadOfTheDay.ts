@@ -30,8 +30,8 @@ async function loadCSVTopicsData(path: string) {
  * Will loop back to the first one after all others are exhausted.
  */
 export async function getRandomThreadTopic() {
-    logger.debug(`Topics data path: ${path.join(process.cwd(), "/data/topics.csv")}`);
-    const topics = await loadCSVTopicsData(path.join(process.cwd(), "/data/topics.csv"));
+    logger.debug(`Topics data path: ${path.join(process.cwd(), "/data/topics.txt")}`);
+    const topics = await loadCSVTopicsData(path.join(process.cwd(), "/data/topics.txt"));
     const randomIndex = Math.floor(Math.random() * (topics.length - 1));
 
     logger.debug(`Random Topic: ${topics[randomIndex]}`)
