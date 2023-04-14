@@ -9,6 +9,11 @@ Harvey is a community managment Discord bot for the Old Dominion University Comp
 ## ⚠️ Notice to new users ⚠️
 The default branch which this repository operates (`dev`) **is not stable**. If you are looking for the current stable build of Harvey please switch to the `master` branch or use the provided Harvey docker image hosted in our repository.
 
+## Join the Harvey Development Server
+This server is where all the testing of Harvey's new features is done.
+
+https://discord.gg/PHKxRhkzwX
+
 ## Quick Start
 To get started with Harvey you first must decide how you intend on hosting him.
 
