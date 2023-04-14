@@ -61,3 +61,10 @@ https://desante.dev
 
 William Faircloth
 https://willuhmjs.com/
+
+## Contributors
+Scott Abbey
+https://github.com/malakhite • https://scottabbey.com/
+
+Tristan F.
+https://github.com/LeoDog896
