@@ -1,5 +1,5 @@
 <p align="center">
-  <img align="center" width="60px" height="60px" src="https://github.com/joeldesante/Harvey/blob/0528b94cdffcab9f1aec0053c5905e2ef22f9688/assets/logo.png" alt="Harvey Development Logo">
+  <img align="center" width="100px" height="100px" src="https://github.com/joeldesante/Harvey/blob/0528b94cdffcab9f1aec0053c5905e2ef22f9688/assets/logo.png" alt="Harvey Development Logo">
 </p>
 <h1 align="center">Harvey</h1>
 
