@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://github.com/joeldesante/Harvey/blob/0528b94cdffcab9f1aec0053c5905e2ef22f9688/assets/logo.png" alt="Harvey Development Logo">
+</p>
+
 # Harvey
 Harvey is a community managment Discord bot for the Old Dominion University Computer Science community. 
 
