@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as csv from 'csv/sync';
-import { logger } from "../logger.js";
 import path from "path";
+import { logger } from "../logger";
 
 
 /**
@@ -9,7 +9,7 @@ import path from "path";
  * Loads the CSV which contains the topics of the day.
  * @param {String} path Location of the topics file.
  */
-async function loadCSVTopicsData(path) {
+async function loadCSVTopicsData(path: string) {
     let data = "";
     try {
         data = fs.readFileSync(path, 'utf8');

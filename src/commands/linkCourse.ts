@@ -1,6 +1,7 @@
 import { SlashCommandBuilder, SlashCommandChannelOption, SlashCommandRoleOption, SlashCommandStringOption } from '@discordjs/builders';
-import { linkExistingCourseChannel } from '../lib/courseChannels.js';
-import { messageEmbed } from '../lib/messageEmbed.js';
+import { linkExistingCourseChannel } from '../lib/courseChannels';
+import { messageEmbed } from '../lib/messageEmbed';
+import type { CommandInteraction } from 'discord.js';
 
 export default {
     body: new SlashCommandBuilder()
@@ -31,12 +32,12 @@ export default {
         )
         .setDefaultMemberPermissions(0)
         .setDMPermission(false),
-    onTriggered: async function(interaction) {
+    onTriggered: async function(interaction: CommandInteraction) {
         await linkExistingCourseChannel(
-            interaction.options.getChannel("course-channel").id,
-            interaction.options.getString("course-message"),
-            interaction.options.getRole("course-role").id,
-            interaction.options.getString("course-name")
+            interaction.options.getChannel("course-channel")?.id!,
+            interaction.options.getString("course-message")!,
+            interaction.options.getRole("course-role")?.id!,
+            interaction.options.getString("course-name")!
         );
         interaction.reply({embeds: [messageEmbed("Linked role successfully", "GREEN")]});
     }   
