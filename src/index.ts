@@ -6,6 +6,7 @@ import client from './discordClient';
 import { registerCourseChannelHandler } from './handlers/courseChannelHandler';
 import { registerWelcomeHandler } from './handlers/welcomeMessageHandler';
 import { registerHeartbeatHandler } from './handlers/heartbeatHandler';
+import { registerAPIHandler } from './handlers/apiHandler';
 
 logger.info(`Current working directory: ${process.cwd()}`);
 logger.info("Syncing with the database.");
@@ -17,6 +18,7 @@ logger.info("Registering handlers.");
 registerCourseChannelHandler(client);
 registerWelcomeHandler(client);
 registerHeartbeatHandler(client);
+registerAPIHandler();
 
 logger.info("Logging into Discord.");
 const TOKEN = process.env.DISCORD_TOKEN || "";
