@@ -10,6 +10,9 @@ import deleteCourse from "./deleteCourse";
 import setWelcomeChannel from "./setWelcomeChannel";
 import setThreadOfTheDayChannel from "./setThreadOfTheDayChannel";
 import updateCourses from "./updateCourses";
+import createNetwork from "./network/createNetwork"
+import joinNetwork from "./network/joinNetwork"
+import registerGuild from "./registerGuild";
 
 export default [
     createCourse,
@@ -20,4 +23,7 @@ export default [
     setWelcomeChannel,
     setThreadOfTheDayChannel,
     updateCourses,
+    createNetwork,
+    joinNetwork,
+    registerGuild
 ];

@@ -20,7 +20,7 @@
     "discord-api-types": "^0.37.38",
     "discord.js": "^13.8.0",
     "dotenv": "^16.0.1",
-    "express": "^4.18.1",
+    "express": "^4.18.2",
     "lodash": "^4.17.21",
     "sequelize": "^6.21.0",
     "sqlite3": "^5.0.8",
