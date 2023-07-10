@@ -20,4 +20,5 @@ export async function registerSMTPServerHandler() {
     });
     server.listen(25);
     logger.info("Mail Service Connected.");
+    
 }
