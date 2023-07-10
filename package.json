@@ -15,6 +15,7 @@
   "dependencies": {
     "@discordjs/builders": "^0.15.0",
     "@discordjs/rest": "^0.5.0",
+    "@types/mailparser": "^3.4.0",
     "@types/smtp-server": "^3.5.7",
     "color-convert": "^2.0.1",
     "csv": "^6.2.7",
