@@ -16,6 +16,7 @@ export async function registerSMTPServerHandler() {
         },
         onData(stream, session, callback) {
             simpleParser(stream).then(parsed => {
+                console.log(parsed.text);
                 callback();
             }).catch(err => {
                 throw new Error(err);
