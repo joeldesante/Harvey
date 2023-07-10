@@ -1,4 +1,5 @@
 import { SMTPServer } from "smtp-server";
+import { simpleParser } from "mailparser";
 import { logger } from "../logger";
 
 export async function registerSMTPServerHandler() {
@@ -14,11 +15,16 @@ export async function registerSMTPServerHandler() {
             return callback();
         },
         onData(stream, session, callback) {
-            stream.pipe(process.stdout); // print message to console
-            stream.on("end", callback);
+            simpleParser(stream).then(parsed => {
+                callback();
+            }).catch(err => {
+                throw new Error(err);
+            })
+            //stream.pipe(process.stdout); // print message to console
+            //stream.on("end", callback);
         }
     });
     server.listen(25);
     logger.info("Mail Service Connected.");
-    
+
 }

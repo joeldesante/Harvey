@@ -23,6 +23,7 @@
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "lodash": "^4.17.21",
+    "mailparser": "^3.6.5",
     "sequelize": "^6.21.0",
     "smtp-server": "^3.12.0",
     "sqlite3": "^5.0.8",
