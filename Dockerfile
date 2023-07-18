@@ -20,4 +20,4 @@ RUN npm install --no-audit --no-fund
 
 COPY --from=builder /opt/app/dist ./dist
 
-ENTRYPOINT [ "npm", "run", "start" ]
+ENTRYPOINT [ "npm", "run", "dev" ]
