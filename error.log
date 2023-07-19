@@ -1,5 +1,0 @@
-{"level":"error","message":"Hello","service":"smtp-server"}
-{"level":"error"}
-{"level":"error","message":"Hello!"}
-{"level":"error","message":"No \"FROM\" address was provided.","service":"mail"}
-{"level":"error","message":"No \"FROM\" address was provided.","service":"mail"}

@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "ts-node scripts/bootloader.ts",
-    "start": "node dist/index.js",
+    "start": "node dist/scripts/bootloader.js",
     "test": "jest"
   },
   "keywords": [],
