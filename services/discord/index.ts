@@ -1,12 +1,23 @@
 import { Logger } from "winston";
 import { Service } from "../../shared/microservice/microservice";
+import { Client } from "./client";
+import colors from "colors";
 
 export class HarveyDiscord extends Service {
+
+    client: Client;
+
+    constructor(logger: Logger) {
+        super(logger);
+        this.client = new Client(logger);
+    }
+
     async run(): Promise<void> {
-        this.logger.info("I too am here")
+        this.client.connect();
+        this.logger.info(colors.green.bold(`Discord is active`));
     }
 
     async stop(): Promise<void> {
-        throw new Error("Method not implemented.");
+        this.client.close();
     }
 }

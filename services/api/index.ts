@@ -53,6 +53,6 @@ export class HarveyAPI extends Service {
 
     async stop() {
         this.server?.close();
-        this.logger.info("Closed server.")
+        this.logger.info("Closed server")
     }
 }

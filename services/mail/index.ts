@@ -26,11 +26,11 @@ export class HarveyMail extends Service {
             onData(stream, session, callback) {
                 simpleParser(stream).then(parsed => {
 
-                    logger.debug("Processing incoming email.");
+                    logger.debug("Processing incoming email");
 
                     console.log(parsed);
                     // 1. Determine the User who sent the message.
-                    if(!parsed.from) { throw new Error("No \"FROM\" address was provided.") }
+                    if(!parsed.from) { throw new Error("No \"FROM\" address was provided") }
                     const contentSource = ContentSource.resolveFromEmail(parsed.from?.text);
 
                     // 2. Build the parcel.
@@ -49,7 +49,7 @@ export class HarveyMail extends Service {
                     const parcelManager = ParcelManager.getInstance();
                     parcelManager.send(parcelContext);
 
-                    logger.info(`Email recieved from ${contentSource.source} (id: ${contentSource.id}) and added to approval queue.`);
+                    logger.info(`Email recieved from ${contentSource.source} (id: ${contentSource.id}) and added to approval queue`);
                     
                     callback();
                 }).catch(err => {
