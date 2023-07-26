@@ -8,18 +8,18 @@ export class Client {
 
     constructor(logger: Logger) {
         this.logger = logger;
-        this.socket = new Socket("wss://gateway.discord.gg/?v=10&encoding=json");;
+        this.socket = new Socket("wss://gateway.discord.gg/?v=10&encoding=json");
     }
 
     connect() {
         this.socket.connect();
-
         this.socket.on('message', (message) => {
             this.logger.info(message);
         });
     }
 
-    close() {
-        this.logger.info("Destroyed connection to Discord gateway");
+    disconnect() {
+        this.socket.disconnect();
+        this.logger.info("Gateway socket closed");
     }
 }

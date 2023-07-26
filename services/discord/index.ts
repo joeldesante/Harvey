@@ -18,6 +18,6 @@ export class HarveyDiscord extends Service {
     }
 
     async stop(): Promise<void> {
-        this.client.close();
+        this.client.disconnect();
     }
 }
