@@ -7,12 +7,10 @@ export function registerWelcomeHandler(client: Client) {
         if(!welcomeChannelSettings) return;
         const welcomeChannel = member.guild.channels.cache.get(welcomeChannelSettings.channelId);
         if (!welcomeChannel) return;
-        const joinCoursesHere = member.guild.channels.cache.find(channel => channel.name === "join-courses-here");
-        if (!joinCoursesHere) return;
 
         if (welcomeChannel.isText()) {
             await welcomeChannel.send({ files: ['src/assets/welcome-sticker.png'] });
-            await welcomeChannel.send(`Welcome to the server, <@${member.id}>! Please go to <#${joinCoursesHere.id}> to join course chats.`);
+            await welcomeChannel.send(`Welcome to the server, <@${member.id}>!`);
         } else {
             throw new Error('Channel is not a text-based channel.');
         }
