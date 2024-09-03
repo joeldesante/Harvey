@@ -7,12 +7,13 @@
  * Please do not add code which is fairly resource intensive as it will be executed fairly regularly.
  */
 
-import { getRandomThreadTopic } from "../lib/threadOfTheDay.js";
-import { logger } from "../logger.js";
-import { ThreadOfTheDayChannelSetting } from "../models/configuration_models/threadOfTheDayChannelSetting.js";
+import { getRandomThreadTopic } from "../lib/threadOfTheDay";
+import { logger } from "../logger";
+import { ThreadOfTheDayChannelSetting } from "../models/configuration_models/threadOfTheDayChannelSetting";
+import type { Client } from "discord.js";
 
 
-async function heartbeat(client) {
+async function heartbeat(client: Client) {
 
     // Thread of the day
     const threadOfTheDayChannels = await ThreadOfTheDayChannelSetting.findAll()
@@ -20,7 +21,7 @@ async function heartbeat(client) {
 
 
         const threadOfTheDayChannel = await client.channels.fetch(channel.channelId);
-        if(threadOfTheDayChannel.type !== 'GUILD_TEXT') { continue; }
+        if(threadOfTheDayChannel?.type !== 'GUILD_TEXT') { continue; }
 
         const messages = await threadOfTheDayChannel.messages.fetch({ limit: 1 });
         const lastMessage = messages.first();    // Can be undefined
@@ -42,7 +43,7 @@ async function heartbeat(client) {
     }
 }
 
-export function registerHeartbeatHandler(client) {
+export function registerHeartbeatHandler(client: Client) {
     const heartbeatInterval = setInterval(() => {
         heartbeat(client)
     }, 1000 * 60);

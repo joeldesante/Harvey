@@ -1,6 +1,7 @@
-import { SlashCommandBuilder, SlashCommandChannelOption, SlashCommandRoleOption, SlashCommandStringOption } from '@discordjs/builders';
-import { unlinkExistingCourseChannel } from '../lib/courseChannels.js';
-import { messageEmbed } from '../lib/messageEmbed.js';
+import { SlashCommandBuilder, SlashCommandRoleOption } from '@discordjs/builders';
+import { unlinkExistingCourseChannel } from '../lib/courseChannels';
+import { messageEmbed } from '../lib/messageEmbed';
+import type { CommandInteraction } from 'discord.js';
 
 export default {
     body: new SlashCommandBuilder()
@@ -14,9 +15,9 @@ export default {
         )
         .setDefaultMemberPermissions(0)
         .setDMPermission(false),
-    onTriggered: async function(interaction) {
+    onTriggered: async function(interaction: CommandInteraction) {
         await unlinkExistingCourseChannel(
-            interaction.options.getRole("course-role").id
+            interaction.options.getRole("course-role")?.id!, interaction
         );
         interaction.reply({embeds: [messageEmbed("Unlinked role successfully", "GREEN")]});
     }   

@@ -1,7 +1,8 @@
 import { SlashCommandBuilder, SlashCommandChannelOption } from '@discordjs/builders';
-import { logger } from '../logger.js';
-import { ThreadOfTheDayChannelSetting } from '../models/configuration_models/threadOfTheDayChannelSetting.js';
-import { messageEmbed } from '../lib/messageEmbed.js';
+import { logger } from '../logger';
+import { ThreadOfTheDayChannelSetting } from '../models/configuration_models/threadOfTheDayChannelSetting';
+import { messageEmbed } from '../lib/messageEmbed';
+import type { CommandInteraction } from 'discord.js';
 
 export default {
     body: new SlashCommandBuilder()
@@ -14,18 +15,18 @@ export default {
         )
         .setDefaultMemberPermissions(0)
         .setDMPermission(false),
-    onTriggered: async function(interaction) {
-        const totdChannelSettings = await ThreadOfTheDayChannelSetting.findOne({ where: { guildId: interaction.guild.id } });
+    onTriggered: async function(interaction: CommandInteraction) {
+        const totdChannelSettings = await ThreadOfTheDayChannelSetting.findOne({ where: { guildId: interaction.guild?.id } });
         if(!totdChannelSettings) {
             await ThreadOfTheDayChannelSetting.create({
-                guildId: interaction.guild.id,
-                channelId: interaction.options.getChannel("totd-channel").id
+                guildId: interaction.guild?.id!,
+                channelId: interaction.options.getChannel("totd-channel")?.id!
             });
             logger.info("TOTD channel has been created.");
             return interaction.reply({ embeds: [messageEmbed("TOTD channel has been created.", "GREEN")]});
         }
         await totdChannelSettings.update({
-            channelId: interaction.options.getChannel("totd-channel").id
+            channelId: interaction.options.getChannel("totd-channel")?.id
         });
         logger.info("TOTD channel has been set.");
         interaction.reply({ embeds: [messageEmbed("TOTD channel has been updated.", "GREEN")]});

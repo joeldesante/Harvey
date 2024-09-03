@@ -1,7 +1,10 @@
 import { SlashCommandBuilder, SlashCommandChannelOption } from '@discordjs/builders';
-import { logger } from '../logger.js';
-import { CourseRolesSetting } from '../models/configuration_models/courseRolesSetting.js';
-import { messageEmbed } from '../lib/messageEmbed.js';
+import { ChannelType } from "discord-api-types/v9";
+import { logger } from '../logger';
+import { CourseRolesSetting } from '../models/configuration_models/courseRolesSetting';
+import { messageEmbed } from '../lib/messageEmbed';
+import type { CommandInteraction } from 'discord.js';
+
 
 export default {
     body: new SlashCommandBuilder()
@@ -11,21 +14,25 @@ export default {
             .setName("role-channel")
             .setDescription("The channel in which the role selection will exist.")
             .setRequired(true)
+            // @ts-expect-error Poor typing from discord-api-types
+            .addChannelTypes(ChannelType.GuildText)
         )
         .addChannelOption(new SlashCommandChannelOption()
-            .setName("parent-channel")
+            .setName("parent-category")
             .setDescription("The category in which the course chats will reside.")
             .setRequired(true)
+            // @ts-expect-error Poor typing from discord-api-types
+            .addChannelTypes(ChannelType.GuildCategory)
         )
         .setDefaultMemberPermissions(0)
         .setDMPermission(false),
-    onTriggered: async function(interaction) {
-        const courseRoleSettings = await CourseRolesSetting.findOne({ where: { guildId: interaction.guildId } });
+    onTriggered: async function(interaction: CommandInteraction) {
+        const courseRoleSettings = await CourseRolesSetting.findOne({ where: { guildId: interaction.guildId! } });
         if(courseRoleSettings === null) {
             await CourseRolesSetting.create({
-                guildId: interaction.guildId,
-                roleSelectionChannelId: interaction.options.getChannel("role-channel").id,
-                courseChatCategoryId: interaction.options.getChannel("parent-channel").id
+                guildId: interaction.guildId!,
+                roleSelectionChannelId: interaction.options.getChannel("role-channel")?.id!,
+                courseChatCategoryId: interaction.options.getChannel("parent-channel")?.id!
             });
             
             logger.info("Role selection channel has been created.");
@@ -34,7 +41,7 @@ export default {
         }
 
         courseRoleSettings.update({
-            roleSelectionChannelId: interaction.options.getChannel("role-channel").id
+            roleSelectionChannelId: interaction.options.getChannel("role-channel")?.id
         });
 
         logger.info("Role selection channel has been set.");

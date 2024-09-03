@@ -4,7 +4,10 @@
 /node_modules
 /logs/**/*
 /data/**/*
-!/data/topics.csv
+!/data/topics.txt
 package-lock.json
+pnpm-lock.yaml
 corde.config.json
 .env
+.vscode
+dist
